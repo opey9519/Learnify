@@ -1,5 +1,11 @@
-.Header {
+.navbar {
     display: flex;
-    border: 1px solid red;
-    padding: .75em;
 }
+
+.container {
+    padding: 1em;
+}
+
+.tag {
+    padding: .5em;
+}  
