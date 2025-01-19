@@ -1,12 +1,12 @@
 import "./App.css"
 import Header from "./Header"
-import Body from "./Body"
+import WelcomeHome from "./WelcomeHome"
 
 function App() {
   return (
     <div>
       <Header />
-      <Body />
+      <WelcomeHome />
     </div>
   )
 }

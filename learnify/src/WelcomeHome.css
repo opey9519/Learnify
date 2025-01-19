@@ -1,0 +1,43 @@
+h1 {
+    padding: .25em;
+}
+
+.selectButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5em;
+}
+
+#root {
+    background-color: #3e5c76;
+    color: white;
+}
+
+#studyButton, #cardButton {
+    /* background-color: #fffdf4; */
+    background-color: #1E40AF;
+    color: white;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+#studyButton:hover {
+    background-color: #2563EB;
+    transform: scale(1.05);
+}
+
+#cardButton {
+    background-color: #2a9d8f;
+}
+
+#cardButton:hover {
+    background-color: #33b9a9;
+    transform: scale(1.05);
+}
