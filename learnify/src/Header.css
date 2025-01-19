@@ -1,11 +1,32 @@
 .navbar {
     display: flex;
+    background-color: #1d2d44;
 }
 
 .container {
-    padding: 1em;
+    padding: .75em;
 }
 
-.tag {
+.tag{
     padding: .5em;
-}  
+    text-decoration: none;
+    color: white;
+}
+
+.tag:hover {
+    text-decoration: underline;
+}
+
+.home {
+    font-size: 1.25em;
+}
+
+#dropdown{
+    margin-left: 1em;
+    background-color: #fffdf4;
+    /* background-color: #748cab; */
+}
+
+#dropdownIcon {
+    font-size: .75em;
+}
