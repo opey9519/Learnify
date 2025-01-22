@@ -2,10 +2,24 @@ import { useState } from "react";
 import "./AddFlashSet.css"
 
 function AddFlashSet() {
+     // Add new flashset
+     const [addSet, setAddSet] = useState(false);
+     function newFlashSet() {
+         setAddSet(!addSet);
+     };
+
     return(
-        <form className="AddFlashSet" action="#">
-            <button id="addButton">+</button>
-        </form>
+        <div className="AddFlashSet">
+            <button onClick={newFlashSet} id="addButton">+</button>
+            {
+                addSet ? 
+                <div className="newFlashSet">
+                    <p>new</p>
+                </div>
+                :
+                <></>
+            }
+        </div>
     );
 }
 

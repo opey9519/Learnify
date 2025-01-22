@@ -10,6 +10,10 @@
     justify-content: space-between;
 }
 
+.flashTitle, .flashSet{
+    padding: 1em;
+}
+
 .flashSet {
     display: flex;
     flex-direction: column;
@@ -22,7 +26,6 @@
     padding-bottom: 20%;
     color: black;
     border-radius: 5px;
-    border: 1px solid red;
 }
 
 .flashContent {

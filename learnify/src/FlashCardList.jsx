@@ -24,7 +24,6 @@ function FlashCardList({ question, answer }) {
                 <h2>Flashcard Sets</h2>
                 <AddFlashSet />
             </div>
-            
 
             <div onClick={clicked} className="flashSet">
                 {/* Calling flashcard */}
