@@ -5,6 +5,7 @@ import { useState } from "react";
 
 // Web page portion to hold Flashcards
 function FlashCardList({ question, answer }) {
+    // Control flashset clicked
     const [flashSetClicked, setFlashSetClicked] = useState(false);
     function clicked() {
         setFlashSetClicked(!flashSetClicked);
@@ -26,7 +27,11 @@ function FlashCardList({ question, answer }) {
                     <h3>{tempData.flashcard}</h3>
                 </div>
                 <div>
-                    {flashSetClicked ? <FlashCard question={question} answer={answer} /> : <div id="cardSpace"></div>}
+                    {flashSetClicked ?
+                        <FlashCard question={question} answer={answer} /> // Generates flashcard if set is clicked
+                        :
+                        <div id="cardSpace"></div> // Generates empty div to maintain space
+                    }
                 </div>
                 <div>
                     <FlashCardUserCards user={tempData.user} numCards={tempData.numCards} />
