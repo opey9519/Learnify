@@ -1,0 +1,20 @@
+#addButton {
+    background-color: #2563EB; /* Brighter blue for more pop */
+    color: #FFFFFF; /* Keeps text clean and readable */
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 13px; /* Balanced padding for better click area */
+    border-radius: 12px; /* Slightly more rounded for a modern look */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+#addButton:hover {
+    background-color: #F59E0B; /* Complementary golden yellow for hover effect */
+    color: #1E293B; /* Dark navy for text contrast on hover */
+    transform: translateY(-2px) scale(1.05); /* Slight pop-out effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover */
+}

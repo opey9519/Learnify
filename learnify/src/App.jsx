@@ -3,6 +3,7 @@ import Header from "./Header"
 import WelcomeHome from "./WelcomeHome"
 import Footer from "./Footer"
 import FlashCardList from "./FlashCardList"
+
 const tempFlashCard = {
   question: "What Animal lives in Africa?",
   answer: "Giraffe"

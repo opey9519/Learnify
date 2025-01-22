@@ -1,6 +1,7 @@
 import "./FlashCardList.css"
 import FlashCard from "./FlashCard";
 import FlashCardUserCards from "./FlashCardUserCards";
+import AddFlashSet from "./AddFlashSet"
 import { useState } from "react";
 
 // Web page portion to hold Flashcards
@@ -19,7 +20,11 @@ function FlashCardList({ question, answer }) {
 
     return (
         <div id="" className="container FlashCardList">
-            <h2>Flashcards</h2>
+            <div className="flashTitle">
+                <h2>Flashcard Sets</h2>
+                <AddFlashSet />
+            </div>
+            
 
             <div onClick={clicked} className="flashSet">
                 {/* Calling flashcard */}
