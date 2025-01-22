@@ -22,9 +22,17 @@ function FlashCardList({ question, answer }) {
 
             <div onClick={clicked} className="flashSet">
                 {/* Calling flashcard */}
-                <h3>{tempData.flashcard}</h3>
-                {flashSetClicked ? <FlashCard question={question} answer={answer} /> : <></>}
-                <FlashCardUserCards user={tempData.user} numCards={tempData.numCards} />
+                <div>
+                    <h3>{tempData.flashcard}</h3>
+                </div>
+                <div>
+                    {flashSetClicked ? <FlashCard question={question} answer={answer} /> : <div id="cardSpace"></div>}
+                </div>
+                <div>
+                    <FlashCardUserCards user={tempData.user} numCards={tempData.numCards} />
+                </div>
+
+
             </div>
         </div>
     );
