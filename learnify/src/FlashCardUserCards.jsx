@@ -6,7 +6,7 @@ function FlashCardUserCards({user, numCards}) {
             </div>
             <div className="numCards">
                 <img id="flashCardImg" src="/images/flashcard1.png" alt="Image of Flashcard" />
-                <p>{numCards}</p>
+                <p>{numCards}</p> 
             </div>
         </div>
     );

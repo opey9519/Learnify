@@ -1,47 +1,23 @@
 import "./FlashCardList.css"
-import FlashCard from "./FlashCard";
-import FlashCardUserCards from "./FlashCardUserCards";
 import AddFlashSet from "./AddFlashSet"
-import { useState } from "react";
+import FlashCardSet from "./FlashCardSet";
 
 // Web page portion to hold Flashcards
 function FlashCardList({ question, answer }) {
-    // Control flashset clicked
-    const [flashSetClicked, setFlashSetClicked] = useState(false);
-    function clicked() {
-        setFlashSetClicked(!flashSetClicked);
-    };
-
-    const tempData = {
-        flashcard: "Animals",
-        user: "Gavin",
-        numCards: 2,
-    }
 
     return (
         <div id="" className="container FlashCardList">
             <div className="flashTitle">
                 <h2>Flashcard Sets</h2>
-                <AddFlashSet />
             </div>
-
-            <div onClick={clicked} className="flashSet">
-                {/* Calling flashcard */}
+            <div className="allFlashSets">
                 <div>
-                    <h3>{tempData.flashcard}</h3>
-                </div>
-                <div>
-                    {flashSetClicked ?
-                        <FlashCard question={question} answer={answer} /> // Generates flashcard if set is clicked
-                        :
-                        <div id="cardSpace"></div> // Generates empty div to maintain space
-                    }
-                </div>
-                <div>
-                    <FlashCardUserCards user={tempData.user} numCards={tempData.numCards} />
+                    <FlashCardSet question={question} answer={answer} />
                 </div>
 
-
+                <div className="newFlashSetCard">
+                    <AddFlashSet />
+                </div>
             </div>
         </div>
     );

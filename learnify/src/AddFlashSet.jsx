@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./AddFlashSet.css"
+import FlashCard from "./FlashCard";
 
-function AddFlashSet() {
+function AddFlashSet({question, answer}) {
      // Add new flashset
      const [addSet, setAddSet] = useState(false);
      function newFlashSet() {
@@ -14,10 +15,11 @@ function AddFlashSet() {
             {
                 addSet ? 
                 <div className="newFlashSet">
-                    <p>new</p>
+                    <FlashCard question={question} answer={answer}/>
                 </div>
                 :
                 <></>
+                
             }
         </div>
     );
