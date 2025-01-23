@@ -27,7 +27,7 @@ function Footer() {
                     </a>
                     {/* LinkedIn Link */}
                     <a
-                        href="https://linkedin.com/in/yourprofile"
+                        href="https://linkedin.com/in/gavin-wilson-ba6b67298/"
                         class="text-light mx-2 mediaLink"
                         aria-label="LinkedIn"
                     >
