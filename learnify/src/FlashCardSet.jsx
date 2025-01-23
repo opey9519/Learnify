@@ -3,7 +3,7 @@ import FlashCardUserCards from "./FlashCardUserCards";
 import { useState } from "react";
 
 // Displays Individual Flashcard Sets
-function FlashCardSet({ question, answer }) {
+function FlashCardSet() {
     const tempData = {
         flashcard: "Animals",
         user: "Gavin",

@@ -1,26 +1,28 @@
 import { useState } from "react";
 import "./AddFlashSet.css"
-import FlashCard from "./FlashCard";
+import FlashCardSet from "./FlashCardSet";
 
-function AddFlashSet({question, answer}) {
-     // Add new flashset
-     const [addSet, setAddSet] = useState(false);
-     function newFlashSet() {
-         setAddSet(!addSet);
-     };
+function AddFlashSet() {
+    // Add new flashset
+    const [addSet, setAddSet] = useState(false);
+    function newFlashSet() {
+        setAddSet(!addSet);
+    };
 
-    return(
+    return (
         <div className="AddFlashSet">
-            <button onClick={newFlashSet} id="addButton">+</button>
             {
-                addSet ? 
-                <div className="newFlashSet">
-                    <FlashCard question={question} answer={answer}/>
-                </div>
-                :
-                <></>
-                
+                addSet ?
+                    <div>
+                        <FlashCardSet />
+                    </div>
+                    :
+                    <></>
             }
+            <div>
+                <button onClick={newFlashSet} id="addButton">+</button>
+            </div>
+
         </div>
     );
 }

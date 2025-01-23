@@ -6,7 +6,7 @@ import FlashCardSet from "./FlashCardSet";
 function FlashCardList({ question, answer }) {
 
     return (
-        <div id="" className="container FlashCardList">
+        <div className="container FlashCardList">
             <div className="flashTitle">
                 <h2>Flashcard Sets</h2>
             </div>

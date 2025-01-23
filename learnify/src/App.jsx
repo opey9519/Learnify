@@ -14,8 +14,9 @@ function App() {
     <div>
       <Header />
       <WelcomeHome />
+
+      <FlashCardList question={tempFlashCard.question} answer={tempFlashCard.answer} />
       <Footer />
-      <FlashCardList question={tempFlashCard.question} answer={tempFlashCard.answer}/>
     </div>
   )
 }
