@@ -1,23 +1,17 @@
+import React from "react"
 import "./App.css"
-import Header from "./Header"
-import WelcomeHome from "./WelcomeHome"
-import Footer from "./Footer"
-import FlashCardList from "./FlashCardList"
+import Home from "./pages/Home"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
-const tempFlashCard = {
-  question: "What Animal lives in Africa?",
-  answer: "Giraffe"
-}
+
 
 function App() {
   return (
-    <div>
-      <Header />
-      <WelcomeHome />
-
-      <FlashCardList question={tempFlashCard.question} answer={tempFlashCard.answer} />
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   )
 }
 

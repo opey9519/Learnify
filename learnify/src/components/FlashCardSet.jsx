@@ -1,5 +1,5 @@
 import "./FlashCardSet.css"
-import FlashCardUserCards from "./FlashCardUserCards";
+import FlashCardUserCards from "./FlashCardUserCards"
 import { useState } from "react";
 
 // Displays Individual Flashcard Sets
