@@ -5,7 +5,7 @@ function Header() {
         <nav id="nav" className="navbar">
             <div className="container">
                 <div>
-                    <a id="home" className="tag" href="">Learnify</a>
+                    <a id="home" className="tag" href="/">Learnify</a>
                 </div>
                 <div className="tagsContainer">
                     <a className="tag hide" href="">My Flashcards</a>

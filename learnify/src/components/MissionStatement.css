@@ -1,0 +1,27 @@
+.MissionStatement {
+    background-color: #1d2d44;
+    border-radius: 8px;
+    padding: 20px 30px;
+    margin: 20px auto;
+    max-width: 800px;
+    border: 2px solid #748cab;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .missionHeader {
+    font-size: 2rem;
+    color: #f0ebd8;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  
+  .missionText {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #f0ebd8;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
