@@ -1,0 +1,56 @@
+.ContactInfoPara {
+    background-color: #1d2d44; /* Match navbar background */
+    border-radius: 8px;
+    padding: 20px 30px;
+    margin: 20px auto;
+    max-width: 800px;
+    border: 2px solid #748cab; /* Accent border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .contactHeader {
+    font-size: 2rem;
+    color: #f0ebd8; /* Light text for contrast */
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  
+  .contactSubHeader {
+    font-size: 1.5rem;
+    color: #f0ebd8;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-color: #748cab;
+  }
+  
+  .contactText {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #f0ebd8;
+    margin-bottom: 15px;
+  }
+  
+  .contactText span {
+    color: #a8dadc; /* Highlight email address */
+    font-weight: 600;
+  }
+  
+  .ContactInfoPara p {
+    margin: 10px 0;
+  }
+  
+  .ContactInfoPara a {
+    color: #a8dadc;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .ContactInfoPara a:hover {
+    color: #f0ebd8; /* Subtle hover effect */
+  }
+  

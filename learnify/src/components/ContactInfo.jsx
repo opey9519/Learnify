@@ -1,8 +1,8 @@
-import "./Contact.css"
+import "./ContactInfo.css"
 
-function Contact() {
+function ContactInfo() {
     return (
-        <div className="Contact">
+        <div className="ContactInfo">
             <h2 className="contactHeader">
                 Contact
             </h2>
@@ -15,4 +15,4 @@ function Contact() {
     );
 }
 
-export default Contact;
+export default ContactInfo;
