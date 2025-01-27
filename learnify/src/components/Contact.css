@@ -1,0 +1,30 @@
+.Contact {
+    background-color: #1d2d44; /* Matches the navbar */
+    border-radius: 8px;
+    padding: 20px 30px;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #748cab;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .contactHeader {
+    font-size: 2rem;
+    color: #f0ebd8; /* Light text for contrast */
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  
+  .contactText {
+    font-size: 1.2rem;
+    color: #f0ebd8; /* Matches the rest of the text styling */
+    margin: 8px 0;
+  }
+  
+  .contactText span {
+    color: #748cab; /* Accent color for the email address */
+    font-weight: bold;
+    text-decoration: underline; /* Highlight email */
+    cursor: pointer; /* Suggest it's interactive */
+  }
+  

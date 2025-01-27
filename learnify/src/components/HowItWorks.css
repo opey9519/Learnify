@@ -1,14 +1,13 @@
-.CoreFeatures {
+.HowItWorks {
     background-color: #1d2d44;
     border-radius: 8px;
     padding: 20px 30px;
     margin: 20px auto;
-    max-width: 800px;
     border: 2px solid #748cab;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
-  .coreFeaturesHeader {
+  .HowItWorksHeader {
     font-size: 2rem; 
     color: #f0ebd8; 
     font-weight: 700;
@@ -17,13 +16,13 @@
     /* text-transform: uppercase; */
   }
   
-  .CoreFeatures ul {
+  .HowItWorks ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
   
-  .CoreFeatures li {
+  .HowItWorks li {
     font-size: 1.2rem;
     line-height: 1.8;
     color: #f0ebd8;
@@ -33,7 +32,7 @@
     position: relative;
   }
   
-  .CoreFeatures li::before {
+  .HowItWorks li::before {
     content: "✓"; /* Custom bullet point */
     color: #748cab; /* Accent color for bullets */
     font-size: 1.2rem; /* Match the text size */
