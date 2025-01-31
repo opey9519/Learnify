@@ -1,5 +1,5 @@
 # Dependencies
 from flask import Flask, request, jsonifyx
 
-def get_user():
+def get_new_user():
     pass
