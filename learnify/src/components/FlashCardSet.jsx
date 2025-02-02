@@ -1,33 +1,36 @@
 import "./FlashCardSet.css"
 import FlashCardUserCards from "./FlashCardUserCards"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchFlashcards } from "../api";
 
 // Displays Individual Flashcard Sets
 function FlashCardSet() {
-    const tempData = {
-        flashcard: "Animals",
-        user: "Gavin",
-        numCards: 2,
-    }
+    const [flashcardSets, setFlashcardSets] = useState([])
 
-    // Control flashset clicked (Go into flashset)
-    const [flashSetClicked, setFlashSetClicked] = useState(false);
-    function clicked() {
-        setFlashSetClicked(!flashSetClicked);
-    };
+    useEffect(() => {
+        async function loadData() {
+            const data = await fetchFlashcards();
+            console.log(data)
+            setFlashcardSets(Array.isArray(data) ? data : [data]);
+        }
+        loadData();
+    }, [])
+
+
 
     return (
         <div className="container Set">
-            <div onClick={clicked} className="FlashCardSet">
-                {/* Flash Card title (database) */}
-                <div>
-                    <h3>{tempData.flashcard}</h3>
-                </div>
-
-                <div>
-                    <FlashCardUserCards user={tempData.user} numCards={tempData.numCards} />
-                </div>
-            </div>
+            {flashcardSets.length >= 0 ? (
+                flashcardSets.map((setObj, index) => (
+                    <div key={index} className="FlashCardSet">
+                        <h3>{setObj.set_info.set_title}</h3> {/* Data from API */}
+                        <FlashCardUserCards user={setObj.set_info.user} numCards={setObj.set_info.num_cards} />
+                    </div>
+                ))
+            ) : (
+                <p>Loading Flashcards...</p>
+            )
+            }
         </div>
     );
 }

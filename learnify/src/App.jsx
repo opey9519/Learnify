@@ -7,8 +7,6 @@ import Contact from "./pages/Contact"
 import TermsofService from "./pages/TermsOfService"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 
-
-
 function App() {
   return (
     <Router>
