@@ -1,4 +1,6 @@
+
 function FlashCardUserCards({user, numCards}) {
+
     return (
         <div className="flashContent">
             <div id="flashUser">
