@@ -19,16 +19,16 @@ function FlashCardSet() {
     }, [])
 
     const navigate = useNavigate();
-    const handleClick = () => {
-        navigate("/flashcard-set")
+    const handleClick = (setObj) => {
+        navigate("/flashcard-set", { state: { flashcardSet: setObj } });
     }
 
     return (
         <div className="container Set">
-            {flashcardSets.length >= 0 ? (
+            {flashcardSets.length > 0 ? (
                 flashcardSets.map((setObj, index) => (
-                    <div onClick={handleClick} key={index} className="FlashCardSet">
-                        <h3>{setObj.set_info.set_title}</h3> {/* Data from API */}
+                    <div onClick={() => handleClick(setObj)} key={index} className="FlashCardSet">
+                        <h3>{setObj.set_info.set_title || "Untitled Set"}</h3> {/* Data from API */}
                         <FlashCardUserCards user={setObj.set_info.user} numCards={setObj.set_info.num_cards} />
                     </div>
                 ))
