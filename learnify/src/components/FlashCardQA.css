@@ -32,7 +32,7 @@
 
 .flashcard .back {
     transform: rotateY(180deg);
-    background: #3e5c76;
+    /* background: #3e5c76; */
 }
 
 .flashcard.flipped .front {
