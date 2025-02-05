@@ -30,8 +30,8 @@ function FlashCardQA() {
 
             {/* Controls should navigate from one flashcard to another*/}
             <div className="controls">
-                <button>Next</button>
-                <button>Prev</button>
+                <button>←</button>
+                <button>→</button>
             </div>
         </div>
     )
