@@ -4,11 +4,12 @@
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+    height: 650px;
 }
 
 .flashcard {
-    width: 300px;
-    height: 200px;
+    width: 400px;
+    height: 300px;
     perspective: 1000px;
     cursor: pointer;
 }
@@ -22,7 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2em;
+    font-size: 1.75em;
     background: #1d2d44;
     color: white;
     border-radius: 10px;
