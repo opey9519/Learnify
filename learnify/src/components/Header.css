@@ -1,10 +1,21 @@
 .navbar {
     display: flex;
     background-color: #1d2d44;
+    justify-content: space-between;
 }
+
+/* .navbarToggler {
+    
+} */
 
 .container {
     padding: .75em;
+}
+
+.navbarContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .tag {
@@ -33,10 +44,11 @@
 
 #dropdown {
     margin-left: 1em;
-    background-color: #fffdf4;
+    background-color: none;
     border: none;
     border-radius: 4px;
-    padding: 0.5em 1em;
+    /* padding-right:1em;
+    padding-left:1em; */
     cursor: pointer;
     transition: background-color 0.3s;
     display: none;
@@ -45,6 +57,7 @@
 
 #dropdownIcon {
     color: #333;
+    font-size: 2em;
 }
 
 #dropdown:hover {
@@ -55,6 +68,10 @@
     .hide {
         display: none;
         /* Hide menu on smaller screens */
+    }
+
+    .nav-links .show {
+        display: flex;
     }
 
     #dropdown {
