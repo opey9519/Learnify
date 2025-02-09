@@ -1,8 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Header.css"
 
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth < 768);
+            if (window.innerWidth >= 768) {
+                setIsOpen(false);
+            }
+        }
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, [])
 
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
@@ -22,16 +37,22 @@ function Header() {
 
                     <button onClick={toggleNavbar} id="dropdown" className="navbarToggler" type="button">
                         <span className="navbar-toggler-icon" id="dropdownIcon"></span>
-                        
+
                         {/* <span id="dropdownIcon">≡</span> */}
-                        
+
                     </button>
-                    
+
                 </div>
-                
+
             </div>
-            {isOpen ? <a className="tag" href="">My Flashcards</a> : <></>}
-            {isOpen ? <a className="tag" href="">AI Assistance</a> : <></>}
+            {isOpen ?
+                <div className="dropdownContainer">
+                    <a className="tag" href="#">My Flashcards</a>
+                    <a className="tag" href="#">AI Assistance</a>
+                </div>
+                : <></>
+            }
+            {/* {isSmallScreen ? setIsOpen(!isOpen) : setIsOpen(isOpen)} */}
         </nav>
     );
 }

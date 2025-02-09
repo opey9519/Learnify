@@ -29,6 +29,11 @@
     transition: background-color 0.3s, transform 0.3s;
 }
 
+.dropdownContainer {
+    margin-left: auto;
+    padding: 1em;
+}
+
 .tag:hover {
     background-color: #3b4e72;
     /* Darker blue on hover */
