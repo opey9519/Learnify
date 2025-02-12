@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
 
 
 flashcards = {
@@ -29,22 +30,17 @@ app = Flask(__name__)
 CORS(app)  # Allows Flask API to handle requests to React App
 
 # Configuring Flask to PostgreSQL
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://learnify_user:securepassword@localhost/learnify_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI # Imported from config
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS # imported from config
 
-db = SQLAlchemy(app) # Creating SQLAlchemy Object
+# Creating SQLAlchemy Object
+# Also creates engine automatically
+db = SQLAlchemy(app) 
 
 
 # User model for database
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-
-    def __repr__(self):
-        return f"<User {self.username}>"
-
+    pass
 
 # API route to get all flashcards
 @app.route("/api/flashcards", methods=["GET"])
