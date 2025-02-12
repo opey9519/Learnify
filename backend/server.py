@@ -2,9 +2,11 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt
 from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 
-
+# Fake Database
 flashcards = {
     "set_info": {
         "set_title": "Animals",
@@ -27,25 +29,48 @@ flashcards = {
 
 # Create instance of Flask
 app = Flask(__name__)
-CORS(app)  # Allows Flask API to handle requests to React App
+
 
 # Configuring Flask to PostgreSQL
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI # Imported from config
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS # imported from config
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 
-# Creating SQLAlchemy Object
-# Also creates engine automatically
-db = SQLAlchemy(app) 
+# Creating objects
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app) 
+jwt = JWTManager(app)
+CORS(app)  # Allows Flask API to handle requests to React App
 
 
-# User model for database
+# User model for PostgreSQL database
 class User(db.Model):
-    pass
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    _password_hash = db.Column(db.String(60))
+
+    @property
+    def password(self):
+        raise AttributeError("Password: write-only field")
+
+    @password.setter
+    def password(self, password):
+        self._password_hash = bcrypt.generate_password_hash(
+            password).decode("utf-8")
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self._password_hash, password)
+
 
 # API route to get all flashcards
 @app.route("/api/flashcards", methods=["GET"])
 def get_flashcards():
     return jsonify(flashcards)
+
+
+@app.route("/login", methods=[])
+def login():
+    pass
 
 
 if __name__ == "__main__":
