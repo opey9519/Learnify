@@ -4,6 +4,7 @@ import "./Header.css"
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
+    let logged_in = false;
 
     useEffect(() => {
         const handleResize = () => {
@@ -31,6 +32,7 @@ function Header() {
                 </div>
                 <div className="tagsContainer navbarContainer">
                     <div className={`nav-links ${isOpen ? "show" : ""}`}>
+                        {logged_in ? <></> : <a className="tag hide" href="#">Log in</a>}
                         <a className="tag hide" href="">My Flashcards</a>
                         <a className="tag hide" href="">AI Assistance</a>
                     </div>
@@ -47,6 +49,7 @@ function Header() {
             </div>
             {isOpen ?
                 <div className="dropdownContainer">
+                    {logged_in ? <></> : <a className="tag" href="#">Log in</a>}
                     <a className="tag" href="#">My Flashcards</a>
                     <a className="tag" href="#">AI Assistance</a>
                 </div>
