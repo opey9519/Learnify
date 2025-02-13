@@ -62,13 +62,33 @@ class User(db.Model):
         return bcrypt.check_password_hash(self._password_hash, password)
 
 
-# API route to get all flashcards
+# Get all flashcards
 @app.route("/api/flashcards", methods=["GET"])
 def get_flashcards():
     return jsonify(flashcards)
 
+# Handle Sign Up Process
+@app.route("/register", methods=["POST"])
+def register():
+    data = request.get_json()
+    username = data.get("username")
+    email = data.get("email")
+    password = data.get("password")
 
-@app.route("/login", methods=[])
+    user_exists = User.query.filter((User.username == username) or (User.email == email))
+    if user_exists:
+        return jsonify({"error": "User already exists"}), 400
+
+    new_user = User(username = username, email = email)
+    new_user.password = password
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({"message": "User registered successfuly"}), 201
+
+
+@app.route("/login", methods=[""])
 def login():
     pass
 
