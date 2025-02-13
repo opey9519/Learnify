@@ -13,4 +13,4 @@ SQLALCHEMY_DATABASE_URI = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_N
 SQLALCHEMY_TRACK_MODIFICATIONS = False # Disables Flask-SQLAlchemy event tracking for performance
 
 # JWT Enviornment Variables
-JWT_SECRET_KEY = os.getenv("JWT_SECRET")
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
