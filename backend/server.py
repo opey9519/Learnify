@@ -61,7 +61,7 @@ class User(db.Model):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self._password_hash, password)
-    
+
     def __repr__(self):
         return f"<User {self.username}>"
 
@@ -96,7 +96,7 @@ def register():
     return jsonify({"message": "User registered successfully"}), 201
 
 # Handle Login Authorization
-@app.route("/login", methods=[""])
+@app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
     email = data.get("email")
@@ -111,4 +111,6 @@ def login():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    with app.app_context():
+        db.create_all()
+    app.run()
