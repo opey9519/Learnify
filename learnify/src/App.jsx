@@ -7,6 +7,7 @@ import Contact from "./pages/Contact"
 import TermsofService from "./pages/TermsOfService"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import FlashCardSetPage from "./pages/FlashCardSetPage"
+import Login from "./pages/Login"
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/terms-of-service" element={<TermsofService />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path ="/flashcard-set" element ={<FlashCardSetPage />} />
+        <Route path="/flashcard-set" element={<FlashCardSetPage />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   )

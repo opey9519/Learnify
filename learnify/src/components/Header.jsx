@@ -32,7 +32,7 @@ function Header() {
                 </div>
                 <div className="tagsContainer navbarContainer">
                     <div className={`nav-links ${isOpen ? "show" : ""}`}>
-                        {logged_in ? <></> : <a className="tag hide" href="#">Log in</a>}
+                        {logged_in ? <></> : <a className="tag hide" href="/login">Log in</a>}
                         <a className="tag hide" href="">My Flashcards</a>
                         <a className="tag hide" href="">AI Assistance</a>
                     </div>
@@ -49,7 +49,7 @@ function Header() {
             </div>
             {isOpen ?
                 <div className="dropdownContainer">
-                    {logged_in ? <></> : <a className="tag" href="#">Log in</a>}
+                    {logged_in ? <></> : <a className="tag" href="/login">Log in</a>}
                     <a className="tag" href="#">My Flashcards</a>
                     <a className="tag" href="#">AI Assistance</a>
                 </div>
