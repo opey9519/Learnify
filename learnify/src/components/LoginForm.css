@@ -1,0 +1,37 @@
+.LoginForm {
+    height: 600px;
+    width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Form {
+    background-color: #1d2d44;
+    width: 80%;
+    height: 50%;
+    border: 1px solid #1d2d44;
+    border-radius: 5%;
+}
+
+.Credentials {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.PassBox, .UserBox, .EmailBox {
+    /* border: 1px solid red; */
+    padding: .5em;
+}
+
+.Password, .Username, .Email {
+    padding: .5em;
+}
+
+.SubmitButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
