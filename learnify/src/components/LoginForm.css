@@ -1,37 +1,76 @@
 .LoginForm {
-    height: 600px;
-    width: 600px;
+    height: 100vh; /* Full screen height */
     display: flex;
     justify-content: center;
     align-items: center;
+    /* background-color: #f4f4f4; Light gray background for contrast */
 }
 
 .Form {
     background-color: #1d2d44;
-    width: 80%;
-    height: 50%;
-    border: 1px solid #1d2d44;
-    border-radius: 5%;
+    width: 90%;
+    max-width: 400px;
+    padding: 2em;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    color: white;
+    transition: all 0.3s ease-in-out;
 }
 
 .Credentials {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    gap: 1em;
 }
 
-.PassBox, .UserBox, .EmailBox {
-    /* border: 1px solid red; */
-    padding: .5em;
+.UserBox, .PassBox, .EmailBox {
+    display: flex;
+    flex-direction: column;
 }
 
-.Password, .Username, .Email {
-    padding: .5em;
+label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3em;
+    font-weight: bold;
+}
+
+input {
+    padding: 0.8em;
+    border: 2px solid #3e5c76;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+    color: #1d2d44;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #a8dadc;
+    outline: none;
+    box-shadow: 0 0 8px rgba(168, 218, 220, 0.7);
 }
 
 .SubmitButton {
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin-top: 1em;
+}
+
+.Login {
+    background-color: #a8dadc;
+    color: #1d2d44;
+    border: none;
+    padding: 0.8em 1.5em;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.Login:hover {
+    background-color: #3e5c76;
+    color: white;
 }
