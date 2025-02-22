@@ -106,8 +106,15 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"message": "Invalid email or password"}), 401
 
+    # Creates JWT token for username 
     access_token = create_access_token(identity=user.id)
     return jsonify({"access_token": access_token}), 200
+
+# Create flashcard sets
+@app.route("/createflashcardset", methods = ["POST"])
+@jwt_required()
+def creatFlashcardSet():
+    pass
 
 
 if __name__ == "__main__":
