@@ -45,11 +45,11 @@ function LoginForm() {
         <div className="container LoginForm">
             {/* If LoggedIn, show logout; if LoggedOut, show Login Form */}
             {isLoggedIn ? (
-                <div>
+                <div className="LogoutBox">
                     <h1>
                         You Are Logged In!
                     </h1>
-                    <button onClick={handleLogout}>
+                    <button className="Logout" onClick={handleLogout}>
                         Logout
                     </button>
                 </div>
@@ -58,7 +58,7 @@ function LoginForm() {
 
                     <div className="EmailBox">
                         <label className="Email" htmlFor="">Email</label>
-                        <input className="Email" value={email} onChange={(e) => setEmail(e.target.value)} type="email" required/>
+                        <input className="Email" value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
                     </div>
 
                     {/* <div className="UserBox">
@@ -68,7 +68,7 @@ function LoginForm() {
 
                     <div className="PassBox">
                         <label className="Password" htmlFor="">Password</label>
-                        <input className="Password" value={password} onChange={(e) => setPassword(e.target.value)} type="password" required/>
+                        <input className="Password" value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
                     </div>
 
 

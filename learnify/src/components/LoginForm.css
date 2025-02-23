@@ -6,7 +6,7 @@
     /* background-color: #f4f4f4; Light gray background for contrast */
 }
 
-.Form {
+.Form, .LogoutBox {
     background-color: #1d2d44;
     width: 90%;
     max-width: 600px;
@@ -59,7 +59,7 @@ input:focus {
     margin-top: 1em;
 }
 
-.Signup, #LogButton {
+.Signup, .Logout, #LogButton {
     background-color: #a8dadc;
     color: #1d2d44;
     border: none;
@@ -70,7 +70,7 @@ input:focus {
     transition: 0.3s;
 }
 
-.Signup:hover, #RegisterButton:hover {
+.Signup:hover, .Logout:hover #RegisterButton:hover {
     background-color: #3e5c76;
     color: white;
 }
