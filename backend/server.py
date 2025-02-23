@@ -93,7 +93,9 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"message": "User registered successfully"}), 201
+    access_token = create_access_token(identity=new_user.id)
+
+    return jsonify({"message": "User registered successfully", "access_token": access_token}), 201
 
 # Handle Login Authorization
 @app.route("/login", methods=["POST"])
@@ -113,7 +115,7 @@ def login():
 # Create flashcard sets
 @app.route("/createflashcardset", methods = ["POST"])
 @jwt_required()
-def creatFlashcardSet():
+def createFlashcardSet():
     pass
 
 

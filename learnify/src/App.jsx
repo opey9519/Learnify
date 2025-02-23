@@ -8,6 +8,7 @@ import TermsofService from "./pages/TermsOfService"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import FlashCardSetPage from "./pages/FlashCardSetPage"
 import Login from "./pages/Login"
+import Register from "./pages/Register"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/flashcard-set" element={<FlashCardSetPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element = {<Register/>} />
       </Routes>
     </Router>
   )
