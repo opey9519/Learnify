@@ -1,3 +1,7 @@
+h1 {
+    text-align: center;
+}
+
 .LoginForm {
     height: 100vh; /* Full screen height */
     display: flex;
@@ -6,7 +10,7 @@
     /* background-color: #f4f4f4; Light gray background for contrast */
 }
 
-.Form {
+.Form, .LogoutBox {
     background-color: #1d2d44;
     width: 90%;
     max-width: 600px;
@@ -59,7 +63,7 @@ input:focus {
     margin-top: 1em;
 }
 
-.Login, #RegisterButton {
+.Login, .Logout, #RegisterButton {
     background-color: #a8dadc;
     color: #1d2d44;
     border: none;
@@ -70,7 +74,7 @@ input:focus {
     transition: 0.3s;
 }
 
-.Login:hover, #RegisterButton:hover {
+.Login:hover, .Logout:hover, #RegisterButton:hover {
     background-color: #3e5c76;
     color: white;
 }

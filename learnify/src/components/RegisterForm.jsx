@@ -30,6 +30,7 @@ function RegisterForm() {
         }
     }
 
+    // Handle Logout
     const handleLogout = () => {
         localStorage.removeItem("token");
         setIsLoggedIn(false);
@@ -39,11 +40,11 @@ function RegisterForm() {
         <div className="container RegisterForm">
             {/* If LoggedIn, show logout; if LoggedOut, show Login Form */}
             {isLoggedIn ? (
-                <div>
+                <div className="LogoutBox">
                     <h1>
                         You Are Logged In!
                     </h1>
-                    <button onClick={handleLogout}>
+                    <button className="Logout" onClick={handleLogout}>
                         Logout
                     </button>
                 </div>
