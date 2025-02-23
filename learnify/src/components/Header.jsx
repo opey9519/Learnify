@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useState, useEffect } from "react";
 import "./Header.css"
 
@@ -28,13 +29,18 @@ function Header() {
         <nav id="nav" className="navbar">
             <div className="container">
                 <div>
-                    <a id="home" className="tag" href="/">Learnify</a>
+                    <Link id="home" className="tag" to="/">Learnify</Link>
                 </div>
                 <div className="tagsContainer navbarContainer">
                     <div className={`nav-links ${isOpen ? "show" : ""}`}>
-                        {logged_in ? <></> : <a className="tag hide" href="/login">Log in</a>}
-                        <a className="tag hide" href="">My Flashcards</a>
-                        <a className="tag hide" href="">AI Assistance</a>
+                        {logged_in ?
+                            <button>Log out</button>
+                            :
+                            <Link className="tag hide" to="/login">Log in</Link>
+                        }
+
+                        <Link className="tag hide" to="#">My Flashcards</Link>
+                        <Link className="tag hide" to="#">AI Assistance</Link>
                     </div>
 
                     <button onClick={toggleNavbar} id="dropdown" className="navbarToggler" type="button">
@@ -49,9 +55,9 @@ function Header() {
             </div>
             {isOpen ?
                 <div className="dropdownContainer">
-                    {logged_in ? <></> : <a className="tag" href="/login">Log in</a>}
-                    <a className="tag" href="#">My Flashcards</a>
-                    <a className="tag" href="#">AI Assistance</a>
+                    {logged_in ? <></> : <Link className="tag" to="/login">Log in</Link>}
+                    <Link className="tag" to="#">My Flashcards</Link>
+                    <Link className="tag" to="#">AI Assistance</Link>
                 </div>
                 : <></>
             }
