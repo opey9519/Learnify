@@ -1,11 +1,17 @@
 import "./FlashCardSet.css"
 import FlashCardUserCards from "./FlashCardUserCards"
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { fetchFlashcards } from "../api";
+// import AuthContext from "../AuthContext"
 
 // Displays Individual Flashcard Sets
 function FlashCardSet() {
+    // const {user} = useContext(AuthContext)
+
+    // if (!user) {
+    //     return <Navigate to="/login" />;
+    // }
 
     // State to dynamically display flashcard sets from backend
     const [flashcardSets, setFlashcardSets] = useState([])

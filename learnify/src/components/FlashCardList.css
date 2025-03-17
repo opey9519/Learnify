@@ -12,7 +12,8 @@
     justify-content: space-between;
 }
 
-.flashTitle, .flashSet{
+.flashTitle,
+.flashSet {
     padding: 1em;
 }
 
@@ -39,5 +40,29 @@
     margin-right: 2em;
 }
 
+.LogInContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.LogIn {
+    background-color: #a8dadc;
+    color: #1d2d44;
+    border: none;
+    padding: 0.8em 5em;
+    font-size: 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    margin: 1em;
+    font-weight: bold;
+}
 
+.LogIn:hover {
+    background-color: #3e5c76;
+    color: white;
+    transform: scale(1.05);
+    
+}
