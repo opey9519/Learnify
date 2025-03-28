@@ -16,8 +16,14 @@ export const AuthProvider = ({ children }) => {
     // Updating User from localstorage
     useEffect(() => {
         const storedUser = localStorage.getItem("user")
-        if (storedUser) {
-            setUser(JSON.parse(storedUser))
+        if (storedUser) { // Catches undefined behavior
+            try {
+                setUser(JSON.parse(storedUser))
+            }
+            catch (error) {
+                console.log("Error parsing data", error)
+                localStorage.removeItem("user")
+            }
         }
     }, [])
 
@@ -32,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value = {{user, login, logout}}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
