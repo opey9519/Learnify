@@ -1,6 +1,7 @@
 # Dependencies
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy,
+from sqlalchemy import ForeignKey
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS, JWT_SECRET_KEY
@@ -50,6 +51,9 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     _password_hash = db.Column(db.String(60))
 
+    sets = db.Column('FlashcardSet', backref='user',
+                     cascade='all, delete-orphan')
+
     @property
     def password(self):
         raise AttributeError("Password: write-only field")
@@ -65,6 +69,32 @@ class User(db.Model):
     def __repr__(self):
         return f"<User {self.username}>"
 
+# FlashcardSet Model (One-to-Many)
+
+
+class FlashcardSet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_id'), nullable=False)
+    cards = db.relationship('Flashcard', backref='set',
+                            cascade='all, delete-orphan')
+
+    def __repr__(self):
+        return f"<FlashcardSet {self.title} - User {self.user_id}"
+
+# Flashcard Model
+
+
+class Flashcard(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.String(255), nullable=False)
+    answer = db.Column(db.String(255), nullable=False)
+    set_id = db.Column(db.Integer, db.ForeignKey(
+        'flashcard_set.id'), nullable=False)
+
+    def __repr__(self):
+        return f"<Flashcard Question {self.question} - Set {self.set_id}"
+
 
 # Get all flashcards
 @app.route("/api/flashcards", methods=["GET"])
@@ -72,6 +102,8 @@ def get_flashcards():
     return jsonify(flashcards)
 
 # Handle Sign Up Process
+
+
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
@@ -98,6 +130,8 @@ def register():
     return jsonify({"message": "User registered successfully", "access_token": access_token}), 201
 
 # Handle Login Authorization
+
+
 @app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
@@ -108,12 +142,14 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"message": "Invalid email or password"}), 401
 
-    # Creates JWT token for username 
+    # Creates JWT token for username
     access_token = create_access_token(identity=user.id)
     return jsonify({"access_token": access_token}), 200
 
 # Create flashcard sets
-@app.route("/createflashcardset", methods = ["POST"])
+
+
+@app.route("/createflashcardset", methods=["POST"])
 @jwt_required()
 def createFlashcardSet():
     pass
