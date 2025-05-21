@@ -1,11 +1,11 @@
 # Dependencies
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy,
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS, JWT_SECRET_KEY
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 # Fake Database
 flashcards = {
@@ -51,8 +51,8 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     _password_hash = db.Column(db.String(60))
 
-    sets = db.Column('FlashcardSet', backref='user',
-                     cascade='all, delete-orphan')
+    sets = db.relationship('FlashcardSet', backref='user',
+                           cascade='all, delete-orphan')  # If User deleted, delete all FlashcardSets
 
     @property
     def password(self):
@@ -75,9 +75,9 @@ class User(db.Model):
 class FlashcardSet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     cards = db.relationship('Flashcard', backref='set',
-                            cascade='all, delete-orphan')
+                            cascade='all, delete-orphan')  # If FlashcardSet is deleted, delete all Flashcards
 
     def __repr__(self):
         return f"<FlashcardSet {self.title} - User {self.user_id}"
@@ -104,47 +104,50 @@ def get_flashcards():
 # Handle Sign Up Process
 
 
-@app.route("/register", methods=["POST"])
-def register():
+@app.route('/signup', methods=['POST'])
+def signUp():
     data = request.get_json()
-    username = data.get("username")
-    email = data.get("email")
-    password = data.get("password")
+    username = data.get('username')
+    email = data.get('email')
 
-    if not username or not email or not password:
-        return jsonify({"error": "Missing required fields"}), 400
-
-    user_exists = User.query.filter(
+    # Finds first existing username and email from JSON payload, if none - return none
+    existing_user = User.query.filter(
         (User.username == username) | (User.email == email)).first()
-    if user_exists:
-        return jsonify({"error": "User already exists"}), 400
 
-    new_user = User(username=username, email=email)
-    new_user.password = password
+    if existing_user:
+        return jsonify({'message': 'User Already Exists'}), 409
+
+    new_user = User(
+        username=username,
+        email=email
+    )
+    new_user.password = data.get('password')  # Calls setter to hash password
 
     db.session.add(new_user)
     db.session.commit()
 
-    access_token = create_access_token(identity=new_user.id)
-
-    return jsonify({"message": "User registered successfully", "access_token": access_token}), 201
+    return jsonify({'message': 'User Successfully Created'}), 201
 
 # Handle Login Authorization
 
 
-@app.route("/login", methods=["POST"])
-def login():
+@app.route("/signin", methods=["POST"])
+def signin():
     data = request.get_json()
-    email = data.get("email")
+    username = data.get("username")
     password = data.get("password")
 
-    user = User.query.filter_by(email=email).first()
-    if not user or not user.check_password(password):
-        return jsonify({"message": "Invalid email or password"}), 401
+    if not username or not password:
+        return jsonify({"message": "Username and password are required"}), 400
 
-    # Creates JWT token for username
-    access_token = create_access_token(identity=user.id)
-    return jsonify({"access_token": access_token}), 200
+    existing_user = User.query.filter_by(username=username).first()
+
+    if not existing_user or not existing_user.check_password(password):
+        return jsonify({'message': 'Invalid Credentials'}), 401
+
+    access_token = create_access_token(identity=username)
+
+    return jsonify(access_token=access_token), 200
 
 # Create flashcard sets
 
@@ -152,6 +155,32 @@ def login():
 @app.route("/createflashcardset", methods=["POST"])
 @jwt_required()
 def createFlashcardSet():
+    data = request.get_json()
+    title = data.get('title')
+    cards = data.get('cards')
+
+    user_id = get_jwt_identity()
+
+    if not title or not cards:
+        return jsonify({'message': 'Title and at least one filled card are required'}), 400
+
+    flashcard_set = FlashcardSet(title=title, user_id=user_id)
+    db.session.add(flashcard_set)
+    db.session.flush()
+
+    for card in cards:
+        flashcard = Flashcard(question=card.get('question'),
+                              answer=card.get('answer'),
+                              set_id=flashcard_set.id)
+        db.session.add(flashcard)
+
+    db.session.commit()
+    return jsonify({'message': 'Created Flashcard Set successfully'}), 201
+
+
+@app.route('/createflashcard', methods=['POST'])
+@jwt_required()
+def createFlashcard():
     pass
 
 
