@@ -33,3 +33,10 @@ Axios – Frontend library for making HTTP requests
 🗂️ PostgreSQL-backed persistence of user data and flashcard content
 
 🔄 Fully connected frontend and backend via REST API
+
+## Setup Instructions
+1. Clone repo
+2. Set up `.env`
+3. Run `pip install -r requirements.txt`
+4. Run `python3 server.py from `/backend`
+5. Run `npm run dev` from `/learnify`
