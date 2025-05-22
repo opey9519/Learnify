@@ -96,11 +96,6 @@ class Flashcard(db.Model):
         return f"<Flashcard Question {self.question} - Set {self.set_id}"
 
 
-# Get all flashcards
-@app.route("/api/flashcards", methods=["GET"])
-def get_flashcards():
-    return jsonify(flashcards)
-
 # Handle Sign Up Process
 
 
@@ -155,38 +150,49 @@ def signin():
 @app.route("/createflashcardset", methods=["POST"])
 @jwt_required()
 def createFlashcardSet():
-    data = request.get_json()
-    title = data.get('title')
-    cards = data.get('cards')
-
     username = get_jwt_identity()
     user = User.query.filter_by(username=username).first()
     user_id = user.id
 
-    if not title or not cards:
-        return jsonify({'message': 'Title and at least one filled card are required'}), 400
+    data = request.get_json()
+    title = data.get('title')
+
+    if not title:
+        return jsonify({'message': 'Title required'}), 400
 
     flashcard_set = FlashcardSet(title=title, user_id=user_id)
     db.session.add(flashcard_set)
-    db.session.flush()
-
-    for card in cards:
-        flashcard = Flashcard(question=card.get('question'),
-                              answer=card.get('answer'),
-                              set_id=flashcard_set.id)
-        db.session.add(flashcard)
-
     db.session.commit()
-    return jsonify({'message': 'Created Flashcard Set successfully'}), 201
+
+    return jsonify({'message': 'Created Flashcard Set successfully', 'set_id': flashcard_set.id}), 201
 
 
 @app.route('/createflashcard', methods=['POST'])
 @jwt_required()
 def createFlashcard():
-    pass
+    username = get_jwt_identity()
+    user = User.query.filter_by(username=username).first()
+    user_id = user.id
+
+    data = request.get_json()
+    question = data.get('question')
+    answer = data.get('answer')
+    set_id = data.get('set_id')
+
+    if not FlashcardSet.query.filter_by(id=set_id, user_id=user_id).first():
+        return jsonify({'message': 'Invalid Flashcard Set'}), 400
+
+    if not question or not answer:
+        return jsonify({'message': 'Question and Answer required'}), 400
+
+    flashcard = Flashcard(question=question, answer=answer, set_id=set_id)
+    db.session.add(flashcard)
+    db.session.commit()
+
+    return jsonify({'message': 'Created Flashcard successfully'}), 201
 
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run()
+    app.run(debug=True)
