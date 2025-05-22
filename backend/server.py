@@ -159,7 +159,9 @@ def createFlashcardSet():
     title = data.get('title')
     cards = data.get('cards')
 
-    user_id = get_jwt_identity()
+    username = get_jwt_identity()
+    user = User.query.filter_by(username=username).first()
+    user_id = user.id
 
     if not title or not cards:
         return jsonify({'message': 'Title and at least one filled card are required'}), 400
