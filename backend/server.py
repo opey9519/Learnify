@@ -5,37 +5,42 @@ from sqlalchemy import ForeignKey
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS, JWT_SECRET_KEY
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
+from datetime import datetime, timedelta, timezone
 
 # Fake Database
-flashcards = {
-    "set_info": {
-        "set_title": "Animals",
-        "num_cards": 2,
-        "user": "Gavin",
-        "cards": [
-            {
-                "id": 1,
-                "question": "What is the fastest land animal?",
-                "answer": "Cheetah"
-            },
-            {
-                "id": 2,
-                "question": "What is the tallest bird?",
-                "answer": "North African Ostrich"
-            }
-        ]
-    },
-}
+# flashcards = {
+#     "set_info": {
+#         "set_title": "Animals",
+#         "num_cards": 2,
+#         "user": "Gavin",
+#         "cards": [
+#             {
+#                 "id": 1,
+#                 "question": "What is the fastest land animal?",
+#                 "answer": "Cheetah"
+#             },
+#             {
+#                 "id": 2,
+#                 "question": "What is the tallest bird?",
+#                 "answer": "North African Ostrich"
+#             }
+#         ]
+#     },
+# }
 
 # Create instance of Flask
 app = Flask(__name__)
 
 
 # Configuring Flask to PostgreSQL
+ACCESS_EXPIRES = timedelta(hours=1)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
 
 # Creating objects
 db = SQLAlchemy(app)
@@ -95,8 +100,23 @@ class Flashcard(db.Model):
     def __repr__(self):
         return f"<Flashcard Question {self.question} - Set {self.set_id}"
 
+# Keep track of revoked JWT tokens
+
+
+class TokenBlocklist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    jti = db.Column(db.String(36), nullable=False, index=True)
+    created_at = db.Column(db.DateTime, nullable=False)
+
+
 ################################################################ User Management ################################################################
 # Handle Sign Up Process
+@jwt.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
+    jti = jwt_payload["jti"]
+    token = db.session.query(TokenBlocklist.id).filter_by(jti=jti).scalar()
+
+    return token is not None
 
 
 @app.route('/signup', methods=['POST'])
@@ -150,7 +170,12 @@ def signin():
 @app.route("/signout", methods=["POST"])
 @jwt_required()
 def signout():
-    pass
+    jti = get_jwt()["jti"]
+    now = datetime.now(timezone.utc)
+    db.session.add(TokenBlocklist(jti=jti, created_at=now))
+    db.session.commit()
+    identity = get_jwt_identity()
+    return jsonify({"message": f"JWT for {identity} Revoked"})
 
 #################################################################################################################################################
 
@@ -161,7 +186,7 @@ def signout():
 
 @app.route("/getflashcardsets", methods=["GET"])
 @jwt_required()
-def getFlashcardSet():
+def getFlashcardSets():
     pass
 
 # Get specific Flashcard set
