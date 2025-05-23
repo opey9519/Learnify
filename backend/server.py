@@ -95,7 +95,7 @@ class Flashcard(db.Model):
     def __repr__(self):
         return f"<Flashcard Question {self.question} - Set {self.set_id}"
 
-
+################################################################ User Management ################################################################
 # Handle Sign Up Process
 
 
@@ -144,7 +144,36 @@ def signin():
 
     return jsonify(access_token=access_token), 200
 
-# Create flashcard sets
+# Handle Logout
+
+
+@app.route("/signout", methods=["POST"])
+@jwt_required()
+def signout():
+    pass
+
+#################################################################################################################################################
+
+################################################################ Flashcard Set Management ################################################################
+
+# Get all Flashcard sets
+
+
+@app.route("/getflashcardsets", methods=["GET"])
+@jwt_required()
+def getFlashcardSet():
+    pass
+
+# Get specific Flashcard set
+
+
+@app.route("/getflashcardset/<set_id>", methods=["GET"])
+@jwt_required()
+def getFlashcardSet():
+    pass
+
+
+# Create Flashcard sets
 
 
 @app.route("/createflashcardset", methods=["POST"])
@@ -165,6 +194,28 @@ def createFlashcardSet():
     db.session.commit()
 
     return jsonify({'message': 'Created Flashcard Set successfully', 'set_id': flashcard_set.id}), 201
+
+
+# Edit FlashcardSet name
+@app.route("/editflashcardset/<set_id>", methods=["PUT"])
+@jwt_required()
+def editFlashcardSet():
+    pass
+
+# Delete FlashcardSet
+
+
+@app.route("/deleteflashcardset/<set_id>", methods=["DELETE"])
+@jwt_required()
+def deleteFlashcardSet():
+    pass
+
+#################################################################################################################################################
+
+
+################################################################ Flashcard Management ################################################################
+
+# Create Flashcard
 
 
 @app.route('/createflashcard', methods=['POST'])
@@ -190,6 +241,22 @@ def createFlashcard():
     db.session.commit()
 
     return jsonify({'message': 'Created Flashcard successfully'}), 201
+
+# Edit Flashcard
+
+
+@app.route('/editflashcard/<card_id>', methods=['PUT'])
+@jwt_required()
+def editFlashcard():
+    pass
+
+# Delete Flashcard
+
+
+@app.route('/deleteflashcard/<card_id>', methods=['DELETE'])
+@jwt_required()
+def deleteFlashcard():
+    pass
 
 
 if __name__ == "__main__":
