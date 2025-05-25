@@ -312,7 +312,26 @@ def editFlashcardSet(id):
 @app.route("/deleteflashcardset/<int:id>", methods=["DELETE"])
 @jwt_required()
 def deleteFlashcardSet(id):
-    pass
+    # Authorization and get respective user_id
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    user_id = user.id
+    # Query and create flashcard set to return based on id's
+    flashcard_set = FlashcardSet.query.filter_by(
+        id=id, user_id=user_id).first()
+
+    if not flashcard_set:
+        return jsonify({"message": "Flashcard set not found"}), 404
+
+    db.session.delete(flashcard_set)
+
+    db.session.commit()
+
+    return jsonify({"message": f"Flashcard set: {flashcard_set.title} successfully deleted"}), 200
 
 #################################################################################################################################################
 
