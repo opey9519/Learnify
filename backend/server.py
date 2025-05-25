@@ -110,13 +110,15 @@ class TokenBlocklist(db.Model):
 
 
 ################################################################ User Management ################################################################
-# Handle Sign Up Process
+# Blocklist callback
 @jwt.token_in_blocklist_loader
 def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
     jti = jwt_payload["jti"]
     token = db.session.query(TokenBlocklist.id).filter_by(jti=jti).scalar()
 
     return token is not None
+
+# Handle Sign Up Process
 
 
 @app.route('/signup', methods=['POST'])
@@ -170,7 +172,7 @@ def signin():
 @app.route("/signout", methods=["POST"])
 @jwt_required()
 def signout():
-    jti = get_jwt()["jti"]
+    jti = get_jwt()["jti"]  # Search for JWT token ID
     now = datetime.now(timezone.utc)
     db.session.add(TokenBlocklist(jti=jti, created_at=now))
     db.session.commit()
@@ -187,6 +189,7 @@ def signout():
 @app.route("/getflashcardsets", methods=["GET"])
 @jwt_required()
 def getFlashcardSets():
+    # Authorization & get user_id associated w/ JWT Token
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
 
@@ -217,10 +220,37 @@ def getFlashcardSets():
 # Get specific Flashcard set
 
 
-@app.route("/getflashcardset/<set_id>", methods=["GET"])
+@app.route("/getflashcardset/<int:id>", methods=["GET"])
 @jwt_required()
-def getFlashcardSet():
-    pass
+def getFlashcardSet(id):
+    # Authorization and get respective user_id
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    user_id = user.id
+
+    # Query and create flashcard set to return based on id's
+    flash_set = FlashcardSet.query.filter_by(id=id, user_id=user_id).first()
+
+    if not flash_set:
+        return jsonify({'message': 'Flashcard set not found'}), 404
+
+    card_list = []
+    for card in flash_set.cards:
+        card_list.append({
+            "id": card.id,
+            "question": card.question,
+            "answer": card.answer
+        })
+
+    flashcard_set = {
+        "id": flash_set.id,
+        "title": flash_set.title,
+        "cards": card_list
+    }
+
+    return jsonify(flashcard_set), 200
 
 
 # Create Flashcard sets
@@ -247,17 +277,41 @@ def createFlashcardSet():
 
 
 # Edit FlashcardSet name
-@app.route("/editflashcardset/<set_id>", methods=["PUT"])
+@app.route("/editflashcardset/<int:id>", methods=["PUT"])
 @jwt_required()
-def editFlashcardSet():
-    pass
+def editFlashcardSet(id):
+    # Authorization and get respective user_id
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+    user_id = user.id
+
+    # Query and create flashcard set to return based on id's
+    flashcard_set = FlashcardSet.query.filter_by(
+        id=id, user_id=user_id).first()
+
+    if not flashcard_set:
+        return jsonify({'message': 'Flashcard set not found'}), 404
+
+    data = request.get_json()
+    title = data.get('title')
+
+    if not title or not title.strip():
+        return jsonify({'message': 'Invalid title'}), 400
+
+    flashcard_set.title = title.strip()
+    db.session.commit()
+
+    return jsonify({'message': 'Flashcard title updated'}), 200
 
 # Delete FlashcardSet
 
 
-@app.route("/deleteflashcardset/<set_id>", methods=["DELETE"])
+@app.route("/deleteflashcardset/<int:id>", methods=["DELETE"])
 @jwt_required()
-def deleteFlashcardSet():
+def deleteFlashcardSet(id):
     pass
 
 #################################################################################################################################################
