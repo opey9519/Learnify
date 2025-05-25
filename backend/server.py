@@ -187,7 +187,32 @@ def signout():
 @app.route("/getflashcardsets", methods=["GET"])
 @jwt_required()
 def getFlashcardSets():
-    pass
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    sets = FlashcardSet.query.filter_by(user_id=user.id).all()
+
+    flashcard_sets = []
+
+    for flash_set in sets:
+        card_list = []
+        for card in flash_set.cards:
+            card_list.append({
+                "id": card.id,
+                "question": card.question,
+                "answer": card.answer
+            })
+
+        flashcard_sets.append({
+            "id": flash_set.id,
+            "title": flash_set.title,
+            "cards": card_list
+        })
+
+    return jsonify(flashcard_sets), 200
 
 # Get specific Flashcard set
 
