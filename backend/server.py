@@ -304,7 +304,7 @@ def editFlashcardSet(id):
     flashcard_set.title = title.strip()
     db.session.commit()
 
-    return jsonify({'message': 'Flashcard title updated'}), 200
+    return jsonify({'message': 'Flashcard set title updated'}), 200
 
 # Delete FlashcardSet
 
@@ -326,6 +326,9 @@ def deleteFlashcardSet(id):
 
     if not flashcard_set:
         return jsonify({"message": "Flashcard set not found"}), 404
+
+    if flashcard_set.user_id != user_id:
+        return jsonify({"message": "Unauthorized to delete this flashcard set"}), 403
 
     db.session.delete(flashcard_set)
 
@@ -368,18 +371,68 @@ def createFlashcard():
 # Edit Flashcard
 
 
-@app.route('/editflashcard/<card_id>', methods=['PUT'])
+@app.route('/editflashcard/<int:id>', methods=['PUT'])
 @jwt_required()
-def editFlashcard():
-    pass
+def editFlashcard(id):
+    # Authorization and get respective user_id
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    user_id = user.id
+
+    flashcard = Flashcard.query.filter_by(id=id).first()
+
+    if not flashcard:
+        return jsonify({"message": "Flashcard not found"}), 404
+
+    if flashcard.set.user_id != user_id:
+        return jsonify({"message": "Invalid"}), 400
+
+    data = request.get_json()
+    question = data.get('question')
+    answer = data.get('answer')
+
+    if question and answer:
+        flashcard.question = question.strip()
+        flashcard.answer = answer.strip()
+    elif question and not answer:
+        flashcard.question = question.strip()
+    elif answer and not question:
+        flashcard.answer = answer.strip()
+    else:
+        return jsonify({"message": "Invalid"}), 400
+
+    db.session.commit()
+    return jsonify({"message": "Flashcard updated successfully"}), 200
 
 # Delete Flashcard
 
 
-@app.route('/deleteflashcard/<card_id>', methods=['DELETE'])
+@app.route('/deleteflashcard/<int:id>', methods=['DELETE'])
 @jwt_required()
-def deleteFlashcard():
-    pass
+def deleteFlashcard(id):
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    user_id = user.id
+
+    flashcard = Flashcard.query.filter_by(id=id).first()
+
+    if not flashcard:
+        return jsonify({"message": "Flashcard not found"}), 404
+
+    if flashcard.set.user_id != user_id:
+        return jsonify({"message": "Unauthorized to delete this flashcard"}), 403
+
+    db.session.delete(flashcard)
+
+    db.session.commit()
+
+    return jsonify({"message": f"Flashcard: {flashcard.id} successfully deleted"}), 200
 
 
 if __name__ == "__main__":
