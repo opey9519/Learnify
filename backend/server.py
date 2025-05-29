@@ -462,7 +462,7 @@ def deleteFlashcard(id):
 
 @app.route('/generateflashcards', methods=['POST'])
 @jwt_required()
-@limiter.limit('5/minute')
+@limiter.limit('7/minute')
 def generateFlashcards():
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
