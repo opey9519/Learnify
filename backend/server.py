@@ -4,9 +4,14 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS, JWT_SECRET_KEY
+from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS, JWT_SECRET_KEY, OPEN_AI_KEY
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from datetime import datetime, timedelta, timezone
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+import json
+import openai
+
 
 # Fake Database
 # flashcards = {
@@ -29,9 +34,24 @@ from datetime import datetime, timedelta, timezone
 #     },
 # }
 
+# Identity to fetch JWT token for Flask-Limiter (Uses IP Address if not found)
+def get_identity():
+    try:
+        return get_jwt_identity() or get_remote_address()
+    except Exception:
+        return get_remote_address()
+
+
 # Create instance of Flask
 app = Flask(__name__)
+limiter = Limiter(
+    key_func=get_identity,
+    app=app,
+    default_limits=["1000 per day", "100 per hour"]
+)
 
+# OpenAPI Key from config
+openai.api_key = OPEN_AI_KEY
 
 # Configuring Flask to PostgreSQL
 ACCESS_EXPIRES = timedelta(hours=1)
@@ -122,6 +142,7 @@ def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
 
 
 @app.route('/signup', methods=['POST'])
+@limiter.limit('5/minute')
 def signUp():
     data = request.get_json()
     username = data.get('username')
@@ -149,6 +170,7 @@ def signUp():
 
 
 @app.route("/signin", methods=["POST"])
+@limiter.limit('10/minute')
 def signin():
     data = request.get_json()
     username = data.get("username")
@@ -171,6 +193,7 @@ def signin():
 
 @app.route("/signout", methods=["POST"])
 @jwt_required()
+@limiter.limit('30/minute')
 def signout():
     jti = get_jwt()["jti"]  # Search for JWT token ID
     now = datetime.now(timezone.utc)
@@ -433,6 +456,72 @@ def deleteFlashcard(id):
     db.session.commit()
 
     return jsonify({"message": f"Flashcard: {flashcard.id} successfully deleted"}), 200
+
+# Generate flashcards using AI
+
+
+@app.route('/generateflashcards', methods=['POST'])
+@jwt_required()
+@limiter.limit('5/minute')
+def generateFlashcards():
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    user_id = user.id
+
+    data = request.get_json()
+    prompt = data.get('prompt')
+    num_cards = data.get('num_cards', 10)
+    set_id = data.get('set_id')
+
+    flash_set = FlashcardSet.query.filter_by(
+        id=set_id, user_id=user_id).first()
+
+    if not flash_set:
+        return jsonify({"message": "Flashcard set not found"}), 404
+
+    if not prompt or not prompt.strip():
+        return jsonify({"message": "Invalid prompt"}), 400
+
+    full_prompt = (
+        f"Generate {num_cards} flashcards about the topic: '{prompt}'.\n"
+        f"Format them as JSON list of objects like this:\n"
+        f'[{{"question": "...", "answer": "..."}}]'
+    )
+
+    try:
+        completion = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {'role': 'user', 'content': full_prompt}
+            ],
+            temperature=0.5,
+            max_tokens=400
+        )
+
+        content = completion.choices[0].message.content
+
+        # Checks if generated flashcards are correct format, otherwise throw error
+        try:
+            flashcards = json.loads(content)
+            assert isinstance(flashcards, list)
+        except Exception:
+            return jsonify({"message": "Failed to parse flashcards. AI returned malformed JSON."}), 500
+
+        for card in flashcards:
+            new_flashcard = Flashcard(
+                question=card["question"], answer=card["answer"], set_id=flash_set.id
+            )
+            db.session.add(new_flashcard)
+
+        db.session.commit()
+
+        return jsonify({'message': 'Created Flashcard Set successfully', 'set_id': flash_set.id}), 201
+
+    except Exception as e:
+        return jsonify({"message": "AI generation failed", "error": str(e)}), 500
 
 
 if __name__ == "__main__":
