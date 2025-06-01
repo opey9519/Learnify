@@ -9,12 +9,9 @@ import PrivacyPolicy from "./pages/PrivacyPolicy"
 import FlashCardSetPage from "./pages/FlashCardSetPage"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
-import { AuthProvider } from "./AuthContext"
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -25,8 +22,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
-      </Router>
-    </AuthProvider>
   )
 }
 

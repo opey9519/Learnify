@@ -15,26 +15,28 @@ export const AuthProvider = ({ children }) => {
 
     // Updating User from localstorage
     useEffect(() => {
-        const storedUser = localStorage.getItem("user")
-        if (storedUser) { // Catches undefined behavior
+        const token = localStorage.getItem("token");
+        const username = localStorage.getItem("username");
+        if (token && username) { // Catches undefined behavior
             try {
-                setUser(JSON.parse(storedUser))
+                setUser({username, token})
             }
             catch (error) {
                 console.log("Error parsing data", error)
-                localStorage.removeItem("user")
             }
         }
     }, [])
 
     const login = (userData) => {
         setUser(userData)
-        localStorage.setItem("user", JSON.stringify(userData))
+        localStorage.setItem("token", userData.token);
+        localStorage.setItem("username", userData.username);
     }
 
     const logout = () => {
         setUser(null)
-        localStorage.removeItem("user")
+        localStorage.removeItem("token")
+        localStorage.removeItem("username")
     }
 
     return (

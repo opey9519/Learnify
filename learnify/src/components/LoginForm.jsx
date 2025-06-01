@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./LoginForm.css"
+import AuthContext from "../AuthContext";
 
 function LoginForm() {
     // const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [username, setUsername] = useState("");
+    const {user, login, logout} = useContext(AuthContext)
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -15,36 +16,48 @@ function LoginForm() {
 
         // Try to fetch 
         try {
-            const response = await fetch("http://127.0.0.1:5000/login", {
+            const response = await fetch("http://127.0.0.1:5000/signin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ username, password })
             });
 
             const data = await response.json();
+            // console.log(data)
 
             if (response.ok) {
                 localStorage.setItem("token", data.access_token);
-                setIsLoggedIn(true);
+                // setIsLoggedIn(true);
+                login(data.username)
                 navigate("/")
             }
             else {
-                alert("Invalid Email or Password")
+                alert("Invalid Username or Password")
             }
         } catch (error) {
             console.log("Login failed:", error);
         }
     }
 
-    const handleLogout = () => {
+    const handleLogout = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/signout", {
+            method: "POST",
+        })
         localStorage.removeItem("token");
-        setIsLoggedIn(false);
+        logout();
+        }
+        catch (error) {
+            console.log("Logout failed:", error);
+        }
     }
 
     return (
         <div className="container LoginForm">
             {/* If LoggedIn, show logout; if LoggedOut, show Login Form */}
-            {isLoggedIn ? (
+            {user ? (
                 <div className="LogoutBox">
                     <h1>
                         You Are Logged In!
@@ -53,12 +66,12 @@ function LoginForm() {
                         Logout
                     </button>
                 </div>
-            ) : <form className="Form" action="" method="post" onSubmit={handleLogin}>
+            ) : <form className="Form" action="" method="POST" onSubmit={handleLogin}>
                 <div className="Credentials">
 
-                    <div className="EmailBox">
-                        <label className="Email" htmlFor="">Email</label>
-                        <input className="Email" value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
+                    <div className="UserBox">
+                        <label className="text" htmlFor="">Username</label>
+                        <input className="user" value={username} onChange={(e) => setUsername(e.target.value)} type="text" required />
                     </div>
 
                     {/* <div className="UserBox">

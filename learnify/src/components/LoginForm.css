@@ -26,7 +26,7 @@
     gap: 1em;
 }
 
-.UserBox, .PassBox, .EmailBox {
+.UserBox, .PassBox, .UserBox {
     display: flex;
     flex-direction: column;
 }

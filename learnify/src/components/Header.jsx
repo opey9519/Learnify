@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./Header.css"
+import AuthContext from "../AuthContext";
 
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
-    let logged_in = false;
+    const {user, logout} = useContext(AuthContext)
 
     useEffect(() => {
         const handleResize = () => {
@@ -33,8 +34,8 @@ function Header() {
                 </div>
                 <div className="tagsContainer navbarContainer">
                     <div className={`nav-links ${isOpen ? "show" : ""}`}>
-                        {logged_in ?
-                            <button>Log out</button>
+                        {user ?
+                            <button className="logout hide" onClick={logout}>Log out</button>
                             :
                             <Link className="tag hide" to="/login">Log in</Link>
                         }
@@ -55,7 +56,7 @@ function Header() {
             </div>
             {isOpen ?
                 <div className="dropdownContainer">
-                    {logged_in ? <></> : <Link className="tag" to="/login">Log in</Link>}
+                    {user ? <></> : <Link className="tag" to="/login">Log in</Link>}
                     <Link className="tag" to="#">My Flashcards</Link>
                     <Link className="tag" to="#">AI Assistance</Link>
                 </div>

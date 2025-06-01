@@ -46,6 +46,27 @@
     /* No underline on hover */
 }
 
+.logout {
+    background-color: #1d2d44;
+    color: white;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.3s;
+    font-weight: 500;
+    padding: 0.5em 1em;
+}
+
+.logout:hover {
+    background-color: #3b4e72;
+    /* Darker blue on hover */
+    transform: scale(1.05);
+    /* Slight scaling effect */
+    text-decoration: none;
+    /* No underline on hover */
+}
+
 #home {
     font-size: 1.25em;
 }
