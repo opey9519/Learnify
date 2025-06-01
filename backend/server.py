@@ -66,7 +66,8 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-CORS(app)  # Allows Flask API to handle requests to React App
+# Allows Flask API to handle requests to React App
+CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 
 
 # User model for PostgreSQL database
@@ -186,7 +187,8 @@ def signin():
 
     access_token = create_access_token(identity=username)
 
-    return jsonify(access_token=access_token), 200
+    return jsonify({"access_token": access_token,
+                    "username": username}), 200
 
 # Handle Logout
 
