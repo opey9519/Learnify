@@ -26,6 +26,35 @@ function Header() {
         setIsOpen(!isOpen);
     }
 
+    const handleLogout = async (e) => {
+        e.preventDefault();
+      
+        try {
+          const token = localStorage.getItem("token");
+        //   console.log(token)
+      
+          const response = await fetch("http://127.0.0.1:5000/signout", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+          });
+      
+          if (response.ok) {
+            logout();
+          } else {
+            const data = await response.json();
+            console.error("Logout failed:", data);
+          }
+        } catch (error) {
+          console.log("Logout failed:", error);
+        }
+      };
+    //   console.log(user)
+      
+
     return (
         <nav id="nav" className="navbar">
             <div className="container">
@@ -35,7 +64,7 @@ function Header() {
                 <div className="tagsContainer navbarContainer">
                     <div className={`nav-links ${isOpen ? "show" : ""}`}>
                         {user ?
-                            <button className="logout hide" onClick={logout}>Log out</button>
+                            <button className="logout hide" onClick={handleLogout}>Log out</button>
                             :
                             <Link className="tag hide" to="/login">Log in</Link>
                         }

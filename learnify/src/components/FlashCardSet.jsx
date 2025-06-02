@@ -3,22 +3,23 @@ import FlashCardUserCards from "./FlashCardUserCards"
 import { useEffect, useState, useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { fetchFlashcards } from "../api";
-// import AuthContext from "../AuthContext"
+import AuthContext from "../AuthContext"
 
 // Displays Individual Flashcard Sets
 function FlashCardSet() {
-    // const {user} = useContext(AuthContext)
+    const {user} = useContext(AuthContext)
 
-    // if (!user) {
-    //     return <Navigate to="/login" />;
-    // }
+    if (!user) {
+        return <Navigate to="/login" />;
+    }
 
     // State to dynamically display flashcard sets from backend
     const [flashcardSets, setFlashcardSets] = useState([])
     useEffect(() => { // Async function to deal with awaiting flashcard data from backend API
         async function loadData() {
             const data = await fetchFlashcards(); // waiting for fetchflashcards to pull backend data
-            setFlashcardSets(Array.isArray(data) ? data : [data]); // Check if data is array, if not wrap data in array for mapping
+            console.log(data)
+            // setFlashcardSets(Array.isArray(data) ? data : [data]); // Check if data is array, if not wrap data in array for mapping
         }
         loadData();
     }, [])
