@@ -7,6 +7,7 @@ function FlashCardQA() {
     // Retrieve passed data
     const { state } = useLocation(); // Destructure state from location 
     const flashcardSet = state.flashcardSet;
+    // console.log(flashcardSet)
 
 
     // If flashcard set data is not found - display message
@@ -15,7 +16,7 @@ function FlashCardQA() {
     }
 
 
-    const num_cards = flashcardSet.set_info.cards.length; // Keep track of total cards
+    const num_cards = flashcardSet.cards.length; // Keep track of total cards
     const [flashcardIndex, setFlashcardIndex] = useState(0); // Setting flashcard index to 0
     const [isFlipped, setIsFlipped] = useState(false)
 
@@ -45,8 +46,8 @@ function FlashCardQA() {
             {/* Flashcard flipped - Apply necesssary styles */}
             <div className={`flashcard ${isFlipped ? "flipped" : ""}`} onClick={handleFlip}>
                 {/* Need to find a way to not hardcode the index */}
-                <div className="front">{flashcardSet.set_info.cards[flashcardIndex].question}</div>
-                <div className="back">{flashcardSet.set_info.cards[flashcardIndex].answer}</div>
+                <div className="front">{flashcardSet.cards[flashcardIndex].question}</div>
+                <div className="back">{flashcardSet.cards[flashcardIndex].answer}</div>
             </div>
 
             {/* Controls should navigate from one flashcard to another*/}
