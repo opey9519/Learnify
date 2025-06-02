@@ -12,29 +12,9 @@ from flask_limiter.util import get_remote_address
 import json
 import openai
 
-
-# Fake Database
-# flashcards = {
-#     "set_info": {
-#         "set_title": "Animals",
-#         "num_cards": 2,
-#         "user": "Gavin",
-#         "cards": [
-#             {
-#                 "id": 1,
-#                 "question": "What is the fastest land animal?",
-#                 "answer": "Cheetah"
-#             },
-#             {
-#                 "id": 2,
-#                 "question": "What is the tallest bird?",
-#                 "answer": "North African Ostrich"
-#             }
-#         ]
-#     },
-# }
-
 # Identity to fetch JWT token for Flask-Limiter (Uses IP Address if not found)
+
+
 def get_identity():
     try:
         return get_jwt_identity() or get_remote_address()
@@ -47,7 +27,6 @@ app = Flask(__name__)
 limiter = Limiter(
     key_func=get_identity,
     app=app,
-    default_limits=["1000 per day", "100 per hour"]
 )
 
 # OpenAPI Key from config
