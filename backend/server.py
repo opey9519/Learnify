@@ -499,7 +499,7 @@ def generateFlashcards():
 
         db.session.commit()
 
-        return jsonify({'message': 'Created Flashcard Set successfully', 'set_id': flash_set.id}), 201
+        return jsonify({'message': 'Created Flashcards successfully', 'set_id': flash_set.id}), 201
 
     except Exception as e:
         return jsonify({"message": "AI generation failed", "error": str(e)}), 500
