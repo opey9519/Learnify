@@ -18,7 +18,7 @@ function FlashCardSet() {
     useEffect(() => { // Async function to deal with awaiting flashcard data from backend API
         async function loadData() {
             const data = await fetchFlashcards(); // waiting for fetchflashcards to pull backend data
-            console.log()
+            console.log(data)
             setFlashcardSets(data)
         }
         loadData();

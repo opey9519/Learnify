@@ -27,6 +27,7 @@
 
 .allFlashSets {
     display: flex;
+    margin: .5em;
 }
 
 #flashCardImg {

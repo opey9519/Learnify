@@ -7,11 +7,11 @@ function FlashCardQA() {
     // Retrieve passed data
     const { state } = useLocation(); // Destructure state from location 
     const flashcardSet = state.flashcardSet;
-    // console.log(flashcardSet)
+    console.log(flashcardSet)
 
 
     // If flashcard set data is not found - display message
-    if (!flashcardSet) {
+    if (!flashcardSet.cards) {
         return <p>No FlashCards Found!</p>
     }
 
@@ -43,21 +43,36 @@ function FlashCardQA() {
 
     return (
         <div className="container FlashCardQA">
-            {/* Flashcard flipped - Apply necesssary styles */}
-            <div className={`flashcard ${isFlipped ? "flipped" : ""}`} onClick={handleFlip}>
-                {/* Need to find a way to not hardcode the index */}
-                <div className="front">{flashcardSet.cards[flashcardIndex].question}</div>
-                <div className="back">{flashcardSet.cards[flashcardIndex].answer}</div>
-            </div>
-
-            {/* Controls should navigate from one flashcard to another*/}
-            <div className="controls">
-                <button onClick={handleprev} disabled={flashcardIndex === 0}>←</button>
-                <span>{flashcardIndex + 1} / {num_cards}</span>
-                <button onClick={handleNext} disabled={flashcardIndex === num_cards - 1}>→</button>
-            </div>
+            {flashcardSet.cards.length > 0 ? (
+                <>
+                    {/* Flashcard flipped - Apply necessary styles */}
+                    <div className={`flashcard ${isFlipped ? "flipped" : ""}`} onClick={handleFlip}>
+                        <div className="front">{flashcardSet.cards[flashcardIndex].question}</div>
+                        <div className="back">{flashcardSet.cards[flashcardIndex].answer}</div>
+                    </div>
+    
+                    {/* Controls to navigate flashcards */}
+                    <div className="controls">
+                        <button onClick={handleprev} disabled={flashcardIndex === 0}>←</button>
+                        <span>{flashcardIndex + 1} / {num_cards}</span>
+                        <button onClick={handleNext} disabled={flashcardIndex === num_cards - 1}>→</button>
+                    </div>
+                </>
+            ) : (
+                <div className="createFlashcards">
+                    <div className="content">
+                        <div>No Cards!</div>
+                        <div className="createFlashcardsBox">
+                            <button className="createFlashcardsButton">Create Flashcards</button>
+                            <button className="createFlashcardsButton">Generate Flashcards</button>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            )}
         </div>
-    )
+    );    
 }
 
 export default FlashCardQA;
