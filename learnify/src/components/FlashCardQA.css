@@ -107,7 +107,7 @@
     background: #1d2d44;
     color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
     transition: transform 0.3s;
     text-align: center;
     padding: 1em;
@@ -135,7 +135,66 @@
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
 }
 
-.createFlashcardsBox {
+.FlashcardsBox {
     display: flex;
     margin-top: 2em;
+}
+
+.createFlashcardsBox {
+    position: absolute;
+    background-color: #1d2d44;
+    display: flex;
+    flex-direction: column;
+    width: 125%;
+    height: 125%;
+    padding: 1.25em;
+    justify-content: space-around;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+}
+
+#isFlashcards {
+    width: 50%;
+    height: 50%;
+}
+
+/* 
+width: 400px;
+    height: 300px;
+    perspective: 1000px;
+    background-color: #1d2d44;
+    padding: 4em;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75em;
+    background: #1d2d44;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+    text-align: center;
+    padding: 1em; */
+
+.questionBox, .answerBox {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 0.25em;
+    letter-spacing: 1px;
+}
+
+.answerBox {
+    margin-top: 0.25em;
+}
+
+#createFlashcardsExit {
+    margin-top: .75em;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
 }
