@@ -2,44 +2,33 @@ import "./FlashCardQA.css"
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import CreateFlashcard from "./CreateFlashcard";
+import { fetchFlashcards } from "../api";
 // import GenerateFlashcard From "./GenerateFlashcard";
 
 // Display FlashCard Question & Answer
 function FlashCardQA() {
     // Retrieve passed data
     const { state } = useLocation(); // Destructure state from location 
-    const flashcardSet = state.flashcardSet;
+    const flashcardSet = state.flashcardSet; 
     const [numCards, setNumCards] = useState(flashcardSet.cards.length)
-    const [flashcards, setFlashcards] = useState(flashcardSet.cards)
+    const [flashcards, setFlashcards] = useState(flashcardSet.cards) // flashcards updated upon requests
     const token = localStorage.getItem("token");
-    // console.log(flashcardSet)
-    useEffect(() => {
-        const fetchFlashcards = async () => {
-            const response = await fetch(`http://127.0.0.1:5000/createflashcard/${flashcardSet.id}`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            })
+    console.log(flashcards)
 
-            const newData = await response.json()
-            console.log(newData)
-            setNumCards(newData);
-        };
+    useEffect(() => {
+        fetchFlashcards()
     }, [])
     
-    // const num_cards = flashcardSet.cards.length; // Keep track of total cards
     const [flashcardIndex, setFlashcardIndex] = useState(0); // Setting flashcard index to 0
-    // console.log(flashcardIndex)
     const [isFlipped, setIsFlipped] = useState(false)
 
     // Creating/Generating flashcards
-    const [isCreateFlashcard, setIsCreateFlashcard] = useState(false)
-    const [isGenerateFlashcard, setIsGenerateFlashcard] = useState(false)
-    const [userQuestion, setUserQuestion] = useState("")
-    const [userAnswer, setUserAnswer] = useState("")
-    const [userPrompt, setUserPrompt] = useState("")
+    const [isCreateFlashcard, setIsCreateFlashcard] = useState(false) // Toggle create flashcard window
+    const [isGenerateFlashcard, setIsGenerateFlashcard] = useState(false) // Toggle generate flashcard window
+    const [userQuestion, setUserQuestion] = useState("") // Question input textbox
+    const [userAnswer, setUserAnswer] = useState("") // Answer input textbox
+    const [userPrompt, setUserPrompt] = useState("") // Prompt input textbox
+    const [promptNumCards, setPromptNumCards] = useState(0) // # of Cards input textbox
 
     // Handle Flipping of flashcards
     const handleFlip = () => {
@@ -67,6 +56,7 @@ function FlashCardQA() {
         setIsCreateFlashcard(!isCreateFlashcard)
     }
 
+    // Calls Create Flashcard API
     const handleCreateFlashcard = async () => {
         try {
             const data = {
@@ -93,6 +83,7 @@ function FlashCardQA() {
         }
     }
 
+    // Calls Delete Flashcard API
     const handleDeleteFlashcard = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:5000/deleteflashcard/${flashcards[flashcardIndex].id}`, {
@@ -113,6 +104,7 @@ function FlashCardQA() {
         }
     }
 
+    // Calles Get Flashcards API
     const handleFetchFlashcards = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:5000/getflashcardset/${flashcardSet.id}`, {
@@ -133,6 +125,31 @@ function FlashCardQA() {
     // Reveal/Hide create flashcard
     const handleGenerateClick = () => {
         setIsGenerateFlashcard(!isGenerateFlashcard)
+    }
+
+    // Calls Generate Flashcards API (AI)
+    const handleGenerateFlashcards = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/generateflashcards`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    prompt: userPrompt,
+                    set_id: flashcardSet.id,
+                    num_cards: promptNumCards
+                })
+            })
+
+            if (response.ok) {
+                console.log("Successfully generated flashcards")
+                fetchFlashcards()
+            }
+        } catch (error) {
+            console.log("Failed to generate flashcards", error)
+        }
     }
 
     return (
@@ -179,6 +196,29 @@ function FlashCardQA() {
                             <div className="buttons">
                                 <button className="createFlashcardsButton" id="createFlashcardsExit" onClick={handleCreateClick}>←</button>
                                 <button className="createFlashcardsButton" id="createFlashcardExec" onClick={handleCreateFlashcard}>Create</button>
+                            </div>
+                            
+
+                        </div>)
+                        : 
+                        (<></>)
+                    }
+
+                    {isGenerateFlashcard ? 
+                        (<div className="createFlashcardsBox">
+                            <div className="questionBox promptBox">
+                                    <label htmlFor="">Prompt</label>
+                                    <textarea name="question" id="" cols="30" rows="2" onChange={(e) => setUserPrompt(e.target.value)}></textarea>
+                            </div>
+                            <div className="answerBox numCardsBox">
+                                <label htmlFor="">Number of Cards</label>
+                                {/* <textarea name="answer" id="" cols="30" rows="2" onChange={(e) => setUserAnswer(e.target.value)}></textarea> */}
+                                <input type="number" max="20" onChange={(e) => setPromptNumCards(e.target.value)} />
+                            </div>
+
+                            <div className="buttons">
+                                <button className="createFlashcardsButton" id="createFlashcardsExit" onClick={handleGenerateClick}>←</button>
+                                <button className="createFlashcardsButton" id="createFlashcardExec" onClick={handleGenerateFlashcards}>Generate</button>
                             </div>
                             
 
