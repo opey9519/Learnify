@@ -9,7 +9,7 @@ function WelcomeHome() {
             </div>
             <div className="selectButton">
                 <button id="studyButton" className="btn">Start Studying</button>
-                <button id="cardButton" className="btn">Create Flashcards</button>
+                <button id="cardButton" className="btn">Create Flashcard Sets</button>
             </div>
         </div>
     );

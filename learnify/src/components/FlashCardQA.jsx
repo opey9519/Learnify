@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import CreateFlashcard from "./CreateFlashcard";
 import { fetchFlashcards } from "../api";
+import AuthContext from "../AuthContext";
 // import GenerateFlashcard From "./GenerateFlashcard";
 
 // Display FlashCard Question & Answer
@@ -13,7 +14,7 @@ function FlashCardQA() {
     const [numCards, setNumCards] = useState(flashcardSet.cards.length)
     const [flashcards, setFlashcards] = useState(flashcardSet.cards) // flashcards updated upon requests
     const token = localStorage.getItem("token");
-    console.log(flashcards)
+    // console.log(flashcards)
 
     useEffect(() => {
         fetchFlashcards()
@@ -28,6 +29,7 @@ function FlashCardQA() {
     const [userQuestion, setUserQuestion] = useState("") // Question input textbox
     const [userAnswer, setUserAnswer] = useState("") // Answer input textbox
     const [userPrompt, setUserPrompt] = useState("") // Prompt input textbox
+    const [userEdit, setUserEdit] = useState(false)
     const [promptNumCards, setPromptNumCards] = useState(0) // # of Cards input textbox
 
     // Handle Flipping of flashcards
@@ -56,6 +58,13 @@ function FlashCardQA() {
         setIsCreateFlashcard(!isCreateFlashcard)
     }
 
+    const handleEditClick = () => {
+        const card = flashcards[flashcardIndex]
+        setUserQuestion(card.question)
+        setUserAnswer(card.answer)
+        setUserEdit(!userEdit)
+    }
+
     // Calls Create Flashcard API
     const handleCreateFlashcard = async () => {
         try {
@@ -77,6 +86,7 @@ function FlashCardQA() {
             if (response.ok) {
                 console.log("Successfully created flashcard");
                 handleFetchFlashcards()
+                setIsCreateFlashcard()
             }
         } catch (error) {
             console.log("Failed to create flashcard:", error);
@@ -104,7 +114,7 @@ function FlashCardQA() {
         }
     }
 
-    // Calles Get Flashcards API
+    // Calls Get Flashcards API
     const handleFetchFlashcards = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:5000/getflashcardset/${flashcardSet.id}`, {
@@ -119,6 +129,30 @@ function FlashCardQA() {
             setFlashcards(data.cards)
         } catch (error) {
             console.log("Failed to get flashcards", error)
+        }
+    }
+
+    // Calls Edit Flashcard API
+    const handleEditFlashcard = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/editflashcard/${flashcards[flashcardIndex].id}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    question: userQuestion,
+                    answer: userAnswer
+                })
+            })
+            if (response.ok) {
+                console.log("Successfully edited flashcard")
+                handleFetchFlashcards()
+                handleEditClick()
+            }
+        } catch (error) {
+            console.log("Failed to edit flashcard", error)
         }
     }
 
@@ -156,7 +190,34 @@ function FlashCardQA() {
         <div className="container FlashCardQA">
             {flashcards.length > 0 ? (
                 <>
-                    {/* Flashcard flipped - Apply necessary styles */}
+
+                    { userEdit ? 
+                    (<>
+                        <div className="editButtons">
+                            <button className="edit createFlashcardsButton" onClick={handleEditClick}>←</button>
+                            <button className="edit createFlashcardsButton" onClick={handleEditFlashcard}>Confirm</button>
+                            {/* <button className="edit createFlashcardsButton" onClick={handleDeleteFlashcard}>Delete</button> */}
+                        </div>
+                        <div className="editFlashcardsBox">
+                            <div className="questionBox">
+                                    <label htmlFor="">Question</label>
+                                    <textarea name="question" value={userQuestion} id="" cols="30" rows="2" onChange={(e) => setUserQuestion(e.target.value)}></textarea>
+                            </div>
+                            <div className="answerBox">
+                                <label htmlFor="">Answer</label>
+                                <textarea name="answer" value={userAnswer} id="" cols="30" rows="2" onChange={(e) => setUserAnswer(e.target.value)}></textarea>
+                            </div>
+                        </div>
+                    </>)
+                    :
+                    (<>
+                    <div>
+                        <button className="edit createFlashcardsButton" onClick={handleCreateClick}>Create</button>
+                        <button className="edit createFlashcardsButton" onClick={handleEditClick}>Edit</button>
+                        <button className="edit createFlashcardsButton" onClick={handleDeleteFlashcard}>Delete</button>
+                    </div>
+                    
+                        {/* Flashcard flipped - Apply necessary styles */}
                     <div className={`flashcard ${isFlipped ? "flipped" : ""}`} onClick={handleFlip}>
                         <div className="front">{flashcards[flashcardIndex].question}</div>
                         <div className="back">{flashcards[flashcardIndex].answer}</div>
@@ -167,9 +228,32 @@ function FlashCardQA() {
                         <button onClick={handleprev} disabled={flashcardIndex === 0}>←</button>
                         <span>{flashcardIndex + 1} / {flashcards.length}</span>
                         <button onClick={handleNext} disabled={flashcardIndex === numCards - 1}>→</button>
-                        <button onClick={handleDeleteFlashcard}>Delete</button>
-                        {/* <button onAbort={handleCreateFlashcard}>Create</button> */}
+                        
                     </div>
+                    {isCreateFlashcard ? 
+                        (<div id="cardsAlreadyMade" className="createFlashcardsBox">
+                            <div className="questionBox">
+                                    <label htmlFor="">Question</label>
+                                    <textarea name="question" id="" cols="30" rows="2" onChange={(e) => setUserQuestion(e.target.value)}></textarea>
+                            </div>
+                            <div className="answerBox">
+                                <label htmlFor="">Answer</label>
+                                <textarea name="answer" id="" cols="30" rows="2" onChange={(e) => setUserAnswer(e.target.value)}></textarea>
+                            </div>
+
+                            <div className="buttons">
+                                <button className="createFlashcardsButton" id="createFlashcardsExit" onClick={handleCreateClick}>←</button>
+                                <button className="createFlashcardsButton" id="createFlashcardExec" onClick={handleCreateFlashcard}>Create</button>
+                            </div>
+                            
+
+                        </div>)
+                        : 
+                        (<></>)
+                    }
+                    </>)
+                    
+                    }
                     
                 </>
             ) : (

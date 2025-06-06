@@ -31,9 +31,9 @@ function FlashCardList({ question, answer }) {
                     <FlashCardSet question={question} answer={answer} />
                 </div>
 
-                <div className="newFlashSetCard">
+                {/* <div className="newFlashSetCard">
                     <AddFlashSet />
-                </div>
+                </div> */}
             </div>
         </div>
     );
