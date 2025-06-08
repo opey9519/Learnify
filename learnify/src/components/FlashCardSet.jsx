@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { fetchFlashcards } from "../api";
 import AuthContext from "../AuthContext"
+import EditToggle from "./EditToggle"
 
 // Displays Individual Flashcard Sets
 function FlashCardSet() {
@@ -35,10 +36,21 @@ function FlashCardSet() {
             {/* If flashcard set(s) exist, generate from backend data */}
             {flashcardSets.length > 0 ? (
                 flashcardSets.map((setObj, index) => ( // Create new array of divs looping over backend data
-                    <div onClick={() => handleClick(setObj)} key={index} className="FlashCardSet">
-                        <h3>{setObj.title || "Untitled Set"}</h3> {/* Data from API */}
+                <div className="FlashCardSet">
+                        <div className="titleContent">
+                            <h3>{setObj.title || "Untitled Set"}</h3> {/* Data from API */}  
+                            <EditToggle />
+                        </div>
+                    <div onClick={() => handleClick(setObj)} key={index} className="">
+                        {/* <div className="titleContent">
+                            <h3>{setObj.title || "Untitled Set"}</h3> 
+                        </div> */}
+                        
+                        
                         <FlashCardUserCards user={user.username} numCards={setObj.cards.length} /> {/* Component to show user & num_cards */}
+        
                     </div>
+                </div>
                 ))
             ) : (
                 <p>Loading Flashcards...</p> // If no data...
