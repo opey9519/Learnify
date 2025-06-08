@@ -1,0 +1,51 @@
+.CreateFlashcardSet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    height: 650px;
+}
+
+.createSet {
+    display: flex;
+    flex-direction: column;
+    background-color: #1d2d44;
+    width: 60%;
+    height: 70%;
+    border-radius: 10px;
+    padding: 1em;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.createFlashcardSetButton {
+    text-decoration: none;
+    color: #a8dadc;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 6px;
+    background: #3e5c76;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
+    margin: .5em;
+}
+
+.createFlashcardSetButton:hover {
+    background: #a8dadc;
+    color: #1d2d44;
+    border: 2px solid #1d2d44;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+}
+
+#setName {
+    width: 80%;
+    height: 20%;
+}
+
+#setNameLabel {
+    font-size: 2em;
+}

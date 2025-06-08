@@ -1,4 +1,5 @@
 import "./WelcomeHome.css"
+import { Link } from "react-router-dom";
 
 function WelcomeHome() {
     return (
@@ -9,7 +10,8 @@ function WelcomeHome() {
             </div>
             <div className="selectButton">
                 <button id="studyButton" className="btn">Start Studying</button>
-                <button id="cardButton" className="btn">Create Flashcard Sets</button>
+                {/* <button id="cardButton" className="btn">Create Flashcard Sets</button> */}
+                <Link id="cardButton" className="btn" to="/create-flashcard-set">Create Flashcard Sets</Link>
             </div>
         </div>
     );

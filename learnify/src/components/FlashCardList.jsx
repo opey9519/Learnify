@@ -27,9 +27,10 @@ function FlashCardList({ question, answer }) {
                 <h2>Flashcard Sets</h2>
             </div>
             <div className="allFlashSets">
-                <div>
+                <div className="Sets">
                     <FlashCardSet question={question} answer={answer} />
                 </div>
+                
 
                 {/* <div className="newFlashSetCard">
                     <AddFlashSet />

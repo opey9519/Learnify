@@ -9,6 +9,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy"
 import FlashCardSetPage from "./pages/FlashCardSetPage"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import CreateFlashcardSetPage from "./pages/CreateFlashcardSetPage"
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/flashcard-set" element={<FlashCardSetPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/create-flashcard-set" element = {<CreateFlashcardSetPage/>} />
         </Routes>
   )
 }
