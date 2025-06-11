@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState, useEffect, useContext } from "react";
 import "./Header.css"
 import AuthContext from "../AuthContext";
@@ -7,6 +7,7 @@ function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const {user, logout} = useContext(AuthContext)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const handleResize = () => {
@@ -44,6 +45,7 @@ function Header() {
       
           if (response.ok) {
             logout();
+            navigate('/') // Upon logging out, rerender to home
           } else {
             const data = await response.json();
             console.error("Logout failed:", data);
