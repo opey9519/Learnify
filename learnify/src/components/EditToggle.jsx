@@ -4,7 +4,7 @@ import { fetchFlashcards } from "../api";
 
 
 
-function EditToggle({set_id}) {
+function EditToggle({set_id, refreshFlashcards}) {
     const token = localStorage.getItem('token')
     const [isOpen, setIsOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false)
@@ -29,7 +29,8 @@ function EditToggle({set_id}) {
                 })
             })
             if (response.ok) {
-                fetchFlashcards()
+                await refreshFlashcards();
+                setIsEditOpen(false)
                 console.log("Successfully edited flashcard set")
             }
         } catch (error) {
@@ -48,7 +49,7 @@ function EditToggle({set_id}) {
                 }
             })
             if (response.ok) {
-                fetchFlashcards()
+                await refreshFlashcards();
                 setIsOpen(false)
                 console.log("Successfully deleted flashcard set")
             }
@@ -65,7 +66,7 @@ function EditToggle({set_id}) {
     return (
         <div className="dropdownBox">
             <button id='dropbutton' onClick={handleToggle}>
-                ...
+                .
             </button>
             {isOpen && (
                 <ul className="menu">

@@ -16,15 +16,13 @@ function FlashCardSet() {
 
     // State to dynamically display flashcard sets from backend
     const [flashcardSets, setFlashcardSets] = useState([])
+    const refreshFlashcards = async () => {
+        const data = await fetchFlashcards()
+        setFlashcardSets(data)
+    }
     useEffect(() => { // Async function to deal with awaiting flashcard data from backend API
-        async function loadData() {
-            const data = await fetchFlashcards(); // waiting for fetchflashcards to pull backend data
-            // console.log(data)
-            setFlashcardSets(data)
-        }
-        loadData();
+        refreshFlashcards()
     }, [])
-
 
     const navigate = useNavigate();
     const handleClick = (setObj) => { // On click, navigate inside flashcard set with data passed through state object
@@ -38,10 +36,10 @@ function FlashCardSet() {
             {flashcardSets.length > 0 ? (
                 flashcardSets.map((setObj, index) => ( // Create new array of divs looping over backend data
                 <div className="FlashCardSet">
-                        <div className="titleContent">
-                            <h3>{setObj.title || "Untitled Set"}</h3> {/* Data from API */}  
-                            <EditToggle set_id = {setObj}/>
-                        </div>
+                    <div className="titleContent">
+                        <h3>{setObj.title || "Untitled Set"}</h3> {/* Data from API */}  
+                        <EditToggle set_id = {setObj} refreshFlashcards = {refreshFlashcards}/>
+                    </div>
                     <div onClick={() => handleClick(setObj)} key={index} className="">
                         {/* <div className="titleContent">
                             <h3>{setObj.title || "Untitled Set"}</h3> 
