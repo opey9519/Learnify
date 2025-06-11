@@ -6,6 +6,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS, JWT_SECRET_KEY, OPEN_AI_KEY
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
+from flask_jwt_extended import set_access_cookies, unset_jwt_cookies
 from datetime import datetime, timedelta, timezone
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -33,13 +34,16 @@ limiter = Limiter(
 openai.api_key = OPEN_AI_KEY
 
 # Configuring Flask to PostgreSQL
-ACCESS_EXPIRES = timedelta(hours=1)
+ACCESS_EXPIRES = timedelta(minutes=30)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
+app.config["JWT_COOKIE_SECURE"] = False  # CHANGE TO 'TRUE' IN PRODUCTION
+app.config["JWT_COOKIE_CSRF_PROTECT"] = False  # CHANGE TO 'TRUE' IN PRODUCTION
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 
 # Creating objects
 db = SQLAlchemy(app)
@@ -118,6 +122,24 @@ def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
 
     return token is not None
 
+# Callback to refresh token within 30 minutes of expiring
+
+
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            set_access_cookies(response, access_token)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original response
+        return response
+
+
 # Handle Sign Up Process
 
 
@@ -164,12 +186,27 @@ def signin():
     if not existing_user or not existing_user.check_password(password):
         return jsonify({'message': 'Invalid Credentials'}), 401
 
+    response = jsonify({"username": username})
+
     access_token = create_access_token(identity=username)
 
-    return jsonify({"access_token": access_token,
-                    "username": username}), 200
+    set_access_cookies(response, access_token)
 
-# Handle Logout
+    return response, 200
+
+
+# Get User (Verify logged in and supply AuthContext.jsx)
+@app.route("/getuser", methods=["GET"])
+@jwt_required()
+def getuser():
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify({"username": current_user}), 200
+
+    # Handle Logout
 
 
 @app.route("/signout", methods=["POST"])
@@ -181,7 +218,9 @@ def signout():
     db.session.add(TokenBlocklist(jti=jti, created_at=now))
     db.session.commit()
     identity = get_jwt_identity()
-    return jsonify({"message": f"JWT for {identity} Revoked"})
+    response = jsonify({"message": f"JWT for {identity} Revoked"})
+    unset_jwt_cookies(response)
+    return response, 200
 
 #################################################################################################################################################
 
