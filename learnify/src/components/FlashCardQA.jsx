@@ -15,6 +15,7 @@ function FlashCardQA() {
     const [flashcards, setFlashcards] = useState(flashcardSet.cards) // flashcards updated upon requests
     const token = localStorage.getItem("token");
     // console.log(flashcards)
+    console.log(numCards)
 
     useEffect(() => {
         fetchFlashcards()
@@ -108,6 +109,7 @@ function FlashCardQA() {
                 console.log("Successfully deleted flashcard")
                 // setFlashcardIndex(prevIndex => prevIndex - 1)
                 handleFetchFlashcards()
+                handleprev()
             }
         } catch (error) {
             console.log("Failed to delete flashcard", error)
@@ -127,6 +129,7 @@ function FlashCardQA() {
 
             const data = await response.json();
             setFlashcards(data.cards)
+            setNumCards(data.cards.length)
         } catch (error) {
             console.log("Failed to get flashcards", error)
         }
