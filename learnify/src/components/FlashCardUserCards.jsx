@@ -1,6 +1,6 @@
 
-function FlashCardUserCards({user, numCards}) {
-
+function FlashCardUserCards({set_id, user, numCards}) {
+    set_id = set_id.id
     return (
         <div className="flashContent">
             <div id="flashUser">

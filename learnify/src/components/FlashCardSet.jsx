@@ -19,7 +19,7 @@ function FlashCardSet() {
     useEffect(() => { // Async function to deal with awaiting flashcard data from backend API
         async function loadData() {
             const data = await fetchFlashcards(); // waiting for fetchflashcards to pull backend data
-            console.log(data)
+            // console.log(data)
             setFlashcardSets(data)
         }
         loadData();
@@ -31,6 +31,7 @@ function FlashCardSet() {
         navigate("/flashcard-set", { state: { flashcardSet: setObj } });
     }
 
+
     return (
         <div className="container Set">
             {/* If flashcard set(s) exist, generate from backend data */}
@@ -39,7 +40,7 @@ function FlashCardSet() {
                 <div className="FlashCardSet">
                         <div className="titleContent">
                             <h3>{setObj.title || "Untitled Set"}</h3> {/* Data from API */}  
-                            <EditToggle />
+                            <EditToggle set_id = {setObj}/>
                         </div>
                     <div onClick={() => handleClick(setObj)} key={index} className="">
                         {/* <div className="titleContent">
@@ -47,7 +48,7 @@ function FlashCardSet() {
                         </div> */}
                         
                         
-                        <FlashCardUserCards user={user.username} numCards={setObj.cards.length} /> {/* Component to show user & num_cards */}
+                        <FlashCardUserCards set_id={setObj} user={user.username} numCards={setObj.cards.length} /> {/* Component to show user & num_cards */}
         
                     </div>
                 </div>

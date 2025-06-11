@@ -7,8 +7,9 @@
     max-width: 1200px;
     border-radius: 3px;
     margin: 3em auto;
-    padding: 1em;
+    padding: 1.5em;
   }  
+
 
 .flashTitle {
     display: flex;

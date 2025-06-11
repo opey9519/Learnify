@@ -13,6 +13,7 @@
     padding: 0.25em 0.6em;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    margin-left: 0.5em;
 }
 
 #dropbutton:hover {
@@ -50,4 +51,48 @@
 
 .menu li:hover {
     background-color: #3e5c76;
+}
+
+.editBox {
+    display: flex;
+    flex-direction: column;
+    background-color: #1d2d44;
+    width: 18em;
+    top: -0.8em;
+    left: -12em;
+    height: 6.75em;
+    padding: 0.5em;
+    position: absolute;
+    border: 1px solid #a8dadc;
+    border-radius: 10px;
+}
+
+.button {
+    text-decoration: none;
+    color: #a8dadc;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: #3e5c76;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
+    margin: .5em;
+}
+
+.button:hover {
+    background: #a8dadc;
+    color: #1d2d44;
+    border: 2px solid #1d2d44;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+}
+
+#newSetNameInput {
+    height: 0.75em;
+}
+
+#newSetName {
+    color: white;
 }

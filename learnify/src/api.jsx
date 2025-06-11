@@ -2,7 +2,8 @@
 
 // Frontend sends request to get flashcard data - returns as JS object
 export async function fetchFlashcards() {
-    const token = localStorage.getItem("token")
+    try {
+        const token = localStorage.getItem("token")
     // Fetch data from backend API Endpoint
     const response = await fetch("http://127.0.0.1:5000/getflashcardsets", {
         method: "GET",
@@ -11,13 +12,9 @@ export async function fetchFlashcards() {
         "Content-Type": "application/json"
         },
     }); 
-    if (response.ok) {
-        const data = await response.json() // Convert JSON data from response object to JS Object
-        return data
+    const data = await response.json()
+    return data
+    } catch (error) {
+        console.log("Failed to fetch flashcards", error)
     }
-    else {
-        alert()
-    }
-    
-    
 }
