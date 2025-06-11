@@ -37,20 +37,21 @@ openai.api_key = OPEN_AI_KEY
 ACCESS_EXPIRES = timedelta(minutes=30)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
+# app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
 app.config["JWT_COOKIE_SECURE"] = False  # CHANGE TO 'TRUE' IN PRODUCTION
 app.config["JWT_COOKIE_CSRF_PROTECT"] = False  # CHANGE TO 'TRUE' IN PRODUCTION
-app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+
 
 # Creating objects
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 # Allows Flask API to handle requests to React App
-CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
+CORS(app, supports_credentials=True, origins="http://localhost:5173")
 
 
 # User model for PostgreSQL database
@@ -190,9 +191,10 @@ def signin():
 
     access_token = create_access_token(identity=username)
 
-    set_access_cookies(response, access_token)
+    # set_access_cookies(response, access_token)
 
-    return response, 200
+    return jsonify({"access_token": access_token,
+                    "username": username}), 200
 
 
 # Get User (Verify logged in and supply AuthContext.jsx)
@@ -206,7 +208,7 @@ def getuser():
 
     return jsonify({"username": current_user}), 200
 
-    # Handle Logout
+# Handle Logout
 
 
 @app.route("/signout", methods=["POST"])
