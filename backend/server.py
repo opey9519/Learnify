@@ -34,16 +34,21 @@ limiter = Limiter(
 openai.api_key = OPEN_AI_KEY
 
 # Configuring Flask to PostgreSQL
-ACCESS_EXPIRES = timedelta(minutes=30)
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI  # Link Database
+# Track modifications to database
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
-# app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
+# JWT env key imported
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
-app.config["JWT_COOKIE_SECURE"] = False  # CHANGE TO 'TRUE' IN PRODUCTION
-app.config["JWT_COOKIE_CSRF_PROTECT"] = False  # CHANGE TO 'TRUE' IN PRODUCTION
+# JWT Token expires after x time
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+# Only allows cookies that contain your JWTs to be sent over HTTPs
+# SET TO TRUE IN PRODUCTION
+app.config['JWT_COOKIE_SECURE'] = False
+# SET TO TRUE IN PRODUCTION
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
 
 # Creating objects
@@ -111,6 +116,7 @@ class Flashcard(db.Model):
 class TokenBlocklist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     jti = db.Column(db.String(36), nullable=False, index=True)
+    # type = db.Column(db.String(16), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
 
 
@@ -124,21 +130,6 @@ def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
     return token is not None
 
 # Callback to refresh token within 30 minutes of expiring
-
-
-@app.after_request
-def refresh_expiring_jwts(response):
-    try:
-        exp_timestamp = get_jwt()["exp"]
-        now = datetime.now(timezone.utc)
-        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
-        if target_timestamp > exp_timestamp:
-            access_token = create_access_token(identity=get_jwt_identity())
-            set_access_cookies(response, access_token)
-        return response
-    except (RuntimeError, KeyError):
-        # Case where there is not a valid JWT. Just return the original response
-        return response
 
 
 # Handle Sign Up Process
@@ -188,25 +179,34 @@ def signin():
         return jsonify({'message': 'Invalid Credentials'}), 401
 
     response = jsonify({"username": username})
-
     access_token = create_access_token(identity=username)
+    set_access_cookies(response, access_token)
 
-    # set_access_cookies(response, access_token)
+    return response
 
-    return jsonify({"access_token": access_token,
-                    "username": username}), 200
+# Refresh token before token expires
 
 
-# Get User (Verify logged in and supply AuthContext.jsx)
-@app.route("/getuser", methods=["GET"])
+# @app.after_request
+# def refresh_expiring_jwts(response):
+#     try:
+#         exp_timestamp = get_jwt()["exp"]
+#         now = datetime.now(timezone.utc)
+#         target_timestamp = datetime.timestamp(now + timedelta(minutes=7))
+#         if target_timestamp > exp_timestamp:
+#             access_token = create_access_token(identity=get_jwt_identity())
+#             set_access_cookies(response, access_token)
+#         return response
+#     except (RuntimeError, KeyError):
+#         # Case where there is not a valid JWT. Just return the original response
+#         return response
+
+
+@app.route("/protected", methods=["GET"])
 @jwt_required()
-def getuser():
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
-    if not user:
-        return jsonify({"message": "User not found"}), 404
-
-    return jsonify({"username": current_user}), 200
+def protected():
+    cur_user = get_jwt_identity()
+    return jsonify({"message": f"Welcome back {cur_user}"})
 
 # Handle Logout
 
@@ -215,12 +215,12 @@ def getuser():
 @jwt_required()
 @limiter.limit('30/minute')
 def signout():
-    jti = get_jwt()["jti"]  # Search for JWT token ID
+    token = get_jwt()
+    jti = token["jti"]
     now = datetime.now(timezone.utc)
     db.session.add(TokenBlocklist(jti=jti, created_at=now))
     db.session.commit()
-    identity = get_jwt_identity()
-    response = jsonify({"message": f"JWT for {identity} Revoked"})
+    response = jsonify({"message": f"Signed out and JWT Revoked"})
     unset_jwt_cookies(response)
     return response, 200
 
