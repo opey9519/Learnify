@@ -25,6 +25,8 @@ def get_identity():
 
 # Create instance of Flask
 app = Flask(__name__)
+# Allows Flask API to handle requests to React App
+CORS(app, supports_credentials=True, origins="http://localhost:5173")
 limiter = Limiter(
     key_func=get_identity,
     app=app,
@@ -43,20 +45,18 @@ app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 # JWT Token expires after x time
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=15)
-app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+# app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 # Only allows cookies that contain your JWTs to be sent over HTTPs
 # SET TO TRUE IN PRODUCTION
-app.config['JWT_COOKIE_SECURE'] = False
+# app.config['JWT_COOKIE_SECURE'] = False
 # SET TO TRUE IN PRODUCTION
-app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+# app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
 
 # Creating objects
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-# Allows Flask API to handle requests to React App
-CORS(app, supports_credentials=True, origins="http://localhost:5173")
 
 
 # User model for PostgreSQL database
@@ -178,11 +178,10 @@ def signin():
     if not existing_user or not existing_user.check_password(password):
         return jsonify({'message': 'Invalid Credentials'}), 401
 
-    response = jsonify({"username": username})
     access_token = create_access_token(identity=username)
-    set_access_cookies(response, access_token)
 
-    return response
+    return jsonify({"access_token": access_token,
+                    "username": username})
 
 # Refresh token before token expires
 
@@ -221,7 +220,7 @@ def signout():
     db.session.add(TokenBlocklist(jti=jti, created_at=now))
     db.session.commit()
     response = jsonify({"message": f"Signed out and JWT Revoked"})
-    unset_jwt_cookies(response)
+    # unset_jwt_cookies(response)
     return response, 200
 
 #################################################################################################################################################
