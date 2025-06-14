@@ -16,6 +16,9 @@ export const AuthProvider = ({ children }) => {
 
     // Updating User from localstorage
     useEffect(() => {
+
+        
+
         const token = localStorage.getItem("token");
         const username = localStorage.getItem("username");
         if ((token && token !== "undefined") && (username && username !== "undefined")) { // Catches undefined behavior
@@ -30,8 +33,6 @@ export const AuthProvider = ({ children }) => {
     }, [])
 
     const login = (userData) => {
-        // console.log(userData.access_token)
-        // console.log(userData.username)
         setUser(userData)
         localStorage.setItem("token", userData.access_token);
         localStorage.setItem("username", userData.username);

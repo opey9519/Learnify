@@ -26,8 +26,6 @@ function LoginForm() {
             // console.log(data)
 
             if (response.ok) {
-                // localStorage.setItem("token", data.access_token);
-                // setIsLoggedIn(true);
                 login(data)
                 navigate("/")
             }
