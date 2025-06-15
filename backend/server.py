@@ -44,7 +44,7 @@ app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 # JWT Token expires after x time
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=1)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=5)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)
 # app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 # Only allows cookies that contain your JWTs to be sent over HTTPs
@@ -184,17 +184,22 @@ def signin():
 
     return jsonify({"access_token": access_token,
                     "refresh_token": refresh_token,
-                    "username": username})
+                    "username": username}), 200
 
 # Refresh token before token expires
 
 
 @app.route('/refresh', methods=["POST"])
-@jwt_required(refresh=True)
+@jwt_required()
 def refresh():
     identity = get_jwt_identity()
+    refresh_token = request.get_json().get("refresh_token")
+    if not refresh_token:
+        return jsonify({"message": "Invalid refresh token"}), 400
+
     access_token = create_access_token(identity=identity)
-    return jsonify(access_token=access_token)
+
+    return jsonify(access_token=access_token), 200
 
 # Handle Logout
 # Refresh and Access tokens
@@ -208,7 +213,14 @@ def signout():
     jti = token["jti"]
     ttype = token["type"]
     now = datetime.now(timezone.utc)
+
+    refresh_jti = request.get_json().get("refresh_jti")
+
     db.session.add(TokenBlocklist(jti=jti, token_type=ttype, created_at=now))
+    if refresh_jti:
+        db.session.add(TokenBlocklist(jti=refresh_jti,
+                       token_type="refresh", created_at=now))
+
     db.session.commit()
     response = jsonify({"message": f"Signed out and {ttype} token revoked"})
     return response, 200
