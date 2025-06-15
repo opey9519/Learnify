@@ -1,6 +1,6 @@
 import "./FlashCardQA.css"
-import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import CreateFlashcard from "./CreateFlashcard";
 import { fetchFlashcards } from "../api";
 import AuthContext from "../AuthContext";
@@ -14,11 +14,20 @@ function FlashCardQA() {
     const [numCards, setNumCards] = useState(flashcardSet.cards.length)
     const [flashcards, setFlashcards] = useState(flashcardSet.cards) // flashcards updated upon requests
     const token = localStorage.getItem("token");
+    const {user} = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    
+
     // console.log(flashcards)
     console.log(numCards)
 
     useEffect(() => {
         fetchFlashcards()
+        console.log("new action")
+        if (!user) {
+            navigate('/')
+        }
     }, [])
     
     const [flashcardIndex, setFlashcardIndex] = useState(0); // Setting flashcard index to 0

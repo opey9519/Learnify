@@ -1,8 +1,9 @@
 .FlashCardSet {
-    flex: 1 1 200px; /* grow/shrink, base size */
-    max-width: 250px; /* caps width per card */
+    /* flex: 1 1 200px; grow/shrink, base size */
+    /* max-width: 250px; caps width per card */
     height: auto; /* let height grow */
     display: flex;
+    /* width: 100%; */
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;

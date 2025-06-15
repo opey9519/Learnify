@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState, useEffect, useContext } from "react";
 import "./Header.css"
 import AuthContext from "../AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +33,9 @@ function Header() {
       
         try {
           const token = localStorage.getItem("token");
+
+          const refresh_token = localStorage.getItem("token");
+          const refreshJti = jwtDecode(refresh_token).jti
         //   console.log(token)
       
           const response = await fetch("http://127.0.0.1:5000/signout", {
@@ -40,8 +44,8 @@ function Header() {
               "Authorization": `Bearer ${token}`,
               "Content-Type": "application/json",
             },
-            // credentials: "include",
-            body: JSON.stringify({})
+            credentials: "include",
+            body: JSON.stringify({refresh_jti: refreshJti})
           });
       
           if (response.ok) {
@@ -62,7 +66,8 @@ function Header() {
         <nav id="nav" className="navbar">
             <div className="container">
                 <div>
-                    <Link id="home" className="tag" to="/">Learnify</Link>
+                    {/* <Link id="home" className="tag" to="/">Learnify</Link> */}
+                    <a id="home" className="tag" href="/">Learnify</a>
                 </div>
                 <div className="tagsContainer navbarContainer">
                     <div className={`nav-links ${isOpen ? "show" : ""}`}>

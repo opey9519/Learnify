@@ -31,8 +31,8 @@
 }
 
 .allFlashSets {
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex;
+    flex-wrap: wrap; */
     justify-content: flex-start;
     gap: 1em;
     width: 100%;
