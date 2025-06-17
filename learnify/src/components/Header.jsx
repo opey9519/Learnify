@@ -77,7 +77,7 @@ function Header() {
                             <Link className="tag hide" to="/login">Log in</Link>
                         }
 
-                        <Link className="tag hide" to="#">My Flashcards</Link>
+                        {/* <Link className="tag hide" to="#">My Flashcards</Link> */}
                         <Link className="tag hide" to="#">AI Assistance</Link>
                     </div>
 
@@ -93,8 +93,13 @@ function Header() {
             </div>
             {isOpen ?
                 <div className="dropdownContainer">
-                    {user ? <></> : <Link className="tag" to="/login">Log in</Link>}
-                    <Link className="tag" to="#">My Flashcards</Link>
+                    {
+                      user ? 
+                      (<button className="logout" onClick={handleLogout}>Log out</button>)
+                      : 
+                      (<Link className="tag" to="/login">Log in</Link>)
+                    }
+                    {/* <Link className="tag" to="#">My Flashcards</Link> */}
                     <Link className="tag" to="#">AI Assistance</Link>
                 </div>
                 : <></>
