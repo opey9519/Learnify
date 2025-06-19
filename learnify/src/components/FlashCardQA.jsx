@@ -192,6 +192,7 @@ function FlashCardQA() {
             if (response.ok) {
                 console.log("Successfully generated flashcards")
                 fetchFlashcards()
+                navigate('/')
             }
         } catch (error) {
             console.log("Failed to generate flashcards", error)
