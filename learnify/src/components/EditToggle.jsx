@@ -66,7 +66,7 @@ function EditToggle({set_id, refreshFlashcards}) {
     return (
         <div className="dropdownBox">
             <button id='dropbutton' onClick={handleToggle}>
-                •
+                •••
             </button>
             {isOpen && (
                 <ul className="menu">

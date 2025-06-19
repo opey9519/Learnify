@@ -40,7 +40,7 @@ function Footer() {
                 </div>
 
                 {/* Nav */}
-                <div>
+                <div className="navLinks">
                     <a href="/about" className="text-light text-decoration-none mx-3 specLinks">
                         About
                     </a>

@@ -78,7 +78,7 @@ function LoginForm() {
                     </div> */}
 
                     <div className="PassBox">
-                        <label className="Password" htmlFor="">Password</label>
+                        <label className="text" htmlFor="">Password</label>
                         <input className="Password" value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
                     </div>
 

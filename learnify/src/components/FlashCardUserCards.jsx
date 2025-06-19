@@ -1,3 +1,4 @@
+import "./FlashCardUserCards.css"
 
 function FlashCardUserCards({set_id, user, numCards}) {
     set_id = set_id.id

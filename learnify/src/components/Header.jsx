@@ -78,7 +78,7 @@ function Header() {
                         }
 
                         {/* <Link className="tag hide" to="#">My Flashcards</Link> */}
-                        <Link className="tag hide" to="#">AI Assistance</Link>
+                        {/* <Link className="tag hide" to="#">AI Assistance</Link> */}
                     </div>
 
                     <button onClick={toggleNavbar} id="dropdown" className="navbarToggler" type="button">
@@ -100,7 +100,7 @@ function Header() {
                       (<Link className="tag" to="/login">Log in</Link>)
                     }
                     {/* <Link className="tag" to="#">My Flashcards</Link> */}
-                    <Link className="tag" to="#">AI Assistance</Link>
+                    {/* <Link className="tag" to="#">AI Assistance</Link> */}
                 </div>
                 : <></>
             }

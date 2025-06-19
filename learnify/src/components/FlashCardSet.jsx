@@ -37,22 +37,27 @@ function FlashCardSet() {
                 flashcardSets.map((setObj, index) => ( // Create new array of divs looping over backend data
                 <div className="FlashCardSet">
                     <div className="titleContent">
-                        <h3>{setObj.title || "Untitled Set"}</h3> {/* Data from API */}  
+                        <div className="titleContent">
+                            <h3>{setObj.title || "Untitled Set"}</h3> {/* Data from API */}  
+                        </div>
                         <EditToggle set_id = {setObj} refreshFlashcards = {refreshFlashcards}/>
                     </div>
-                    <div onClick={() => handleClick(setObj)} key={index} className="">
+                    
+                    <div key={index} className="navToSet">
                         {/* <div className="titleContent">
                             <h3>{setObj.title || "Untitled Set"}</h3> 
                         </div> */}
                         
                         
                         <FlashCardUserCards set_id={setObj} user={user.username} numCards={setObj.cards.length} /> {/* Component to show user & num_cards */}
+                        <button onClick={() => handleClick(setObj)} id="navToSet">→</button>
+                        
         
                     </div>
                 </div>
                 ))
             ) : (
-                <p>Loading Flashcards...</p> // If no data...
+                <div></div>
             )
             }
         </div>
