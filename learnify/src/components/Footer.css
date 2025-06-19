@@ -51,3 +51,11 @@
     margin-right: .5em;
     margin-bottom: .25em;
 }
+
+@media (max-width: 768px) {
+    .navLinks {
+        display: flex;
+        flex-direction: column;
+        /* flex-direction: column; */
+    }
+}

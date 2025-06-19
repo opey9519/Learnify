@@ -54,6 +54,12 @@
     justify-content: space-between;
 }
 
+.titleContent, h3 {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    letter-spacing: 1px;
+}
+
 #editButton {
     background: none;
     border: none;

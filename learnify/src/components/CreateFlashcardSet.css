@@ -49,3 +49,14 @@
 #setNameLabel {
     font-size: 2em;
 }
+
+@media (max-width: 768px) {
+    .createSet {
+        width: 350px;
+    }
+
+    .createFlashcardSetButton {
+        width: 10em;
+        height: auto;
+    }
+}

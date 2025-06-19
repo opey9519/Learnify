@@ -236,3 +236,23 @@ textarea {
     width: 50%;
     height: 60%;
 }
+
+@media (max-width: 768px) {
+    .createFlashcards {
+        width: 88%;
+    }
+
+    .createFlashcardsBox {
+        width: 105%;
+    }
+
+    /* .flashcard .front,
+    .flashcard .back {
+        width: 95%;
+    } */
+
+    #cardsAlreadyMade {
+        width: 90%;
+        height: 65%
+    }
+}
