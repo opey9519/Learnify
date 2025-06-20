@@ -1,19 +1,21 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import "./RegisterForm.css"
+import { useNavigate } from "react-router-dom";
 
 function RegisterForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate()
 
     const handleRegister = async (e) => {
         e.preventDefault(); // prevents form submission
 
         // Try to fetch 
         try {
-            const response = await fetch("http://127.0.0.1:5000/register", {
+            const response = await fetch("http://127.0.0.1:5000/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, password })
@@ -23,7 +25,8 @@ function RegisterForm() {
 
             if (response.ok) {
                 localStorage.setItem("token", data.access_token);
-                setIsLoggedIn(true);
+                navigate('/')
+                // setIsLoggedIn(true);
             }
         } catch (error) {
             console.log("Login failed:", error);
