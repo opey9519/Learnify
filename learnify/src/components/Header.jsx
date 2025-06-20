@@ -50,6 +50,7 @@ function Header() {
       
           if (response.ok) {
             logout();
+            console.log(response.data)
             navigate('/') // Upon logging out, rerender to home
           } else {
             const data = await response.json();

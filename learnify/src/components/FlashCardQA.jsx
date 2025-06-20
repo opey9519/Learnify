@@ -1,7 +1,7 @@
 import "./FlashCardQA.css"
 import { useContext, useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import CreateFlashcard from "./CreateFlashcard";
+// import CreateFlashcard from "./CreateFlashcard";
 import { fetchFlashcards } from "../api";
 import AuthContext from "../AuthContext";
 // import GenerateFlashcard From "./GenerateFlashcard";

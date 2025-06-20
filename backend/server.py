@@ -26,7 +26,7 @@ def get_identity():
 # Create instance of Flask
 app = Flask(__name__)
 # Allows Flask API to handle requests to React App
-CORS(app, origins="http://localhost:5173")
+CORS(app, supports_credentials=True, origins="http://localhost:5173")
 limiter = Limiter(
     key_func=get_identity,
     app=app,
