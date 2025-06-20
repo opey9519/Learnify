@@ -128,6 +128,11 @@ class TokenBlocklist(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
 
 
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+
 ################################################################ User Management ################################################################
 # Blocklist callback
 @jwt.token_in_blocklist_loader
