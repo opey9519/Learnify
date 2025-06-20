@@ -10,6 +10,7 @@ from flask_jwt_extended import create_refresh_token
 from datetime import datetime, timedelta, timezone
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+import os
 import json
 import openai
 
@@ -26,7 +27,13 @@ def get_identity():
 # Create instance of Flask
 app = Flask(__name__)
 # Allows Flask API to handle requests to React App
-CORS(app, supports_credentials=True, origins="http://localhost:5173")
+CORS(app,
+     supports_credentials=True,
+     origins=[
+         # Dev frontend (Vite)
+         os.getenv("CORS_ORIGIN", "http://localhost:5173"),
+         "http://127.0.0.1:5173"                             # Alt local
+     ])
 limiter = Limiter(
     key_func=get_identity,
     app=app,
@@ -547,7 +554,7 @@ def generateFlashcards():
         return jsonify({"message": "AI generation failed", "error": str(e)}), 500
 
 
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     with app.app_context():
+#         db.create_all()
+#     app.run(debug=False)
