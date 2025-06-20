@@ -10,6 +10,7 @@ from flask_jwt_extended import create_refresh_token
 from datetime import datetime, timedelta, timezone
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_migrate import Migrate
 import os
 import json
 import openai
@@ -63,6 +64,7 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=7)
 
 # Creating objects
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
@@ -126,9 +128,6 @@ class TokenBlocklist(db.Model):
     jti = db.Column(db.String(36), nullable=False, index=True)
     token_type = db.Column(db.String(16), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
-
-
-db.create_all()
 
 
 ################################################################ User Management ################################################################
