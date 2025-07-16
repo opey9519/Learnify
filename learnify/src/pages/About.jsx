@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import MissionStatement from "../components/MissionStatement";
-import ProjectOverview from "../components/ProjectOverView";
+import ProjectOverview from "../components/ProjectOverview";
 import CoreFeatures from "../components/CoreFeatures";
 import HowItWorks from "../components/HowItWorks";
 import Footer from "../components/Footer"
