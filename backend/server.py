@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS, JWT_SECRET_KEY, OPEN_AI_KEY
+from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS, JWT_SECRET_KEY, OPEN_AI_KEY, CORS_ORIGIN
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, get_jwt
 from flask_jwt_extended import create_refresh_token
 from datetime import datetime, timedelta, timezone
@@ -32,7 +32,7 @@ CORS(app,
      supports_credentials=True,
      origins=[
          # Dev frontend (Vite)
-         os.getenv("CORS_ORIGIN", "http://localhost:5173"),
+         CORS_ORIGIN, os.getenv("CORS_ORIGIN", "http://localhost:5173"),
          "http://127.0.0.1:5173"                             # Alt local
      ])
 limiter = Limiter(
