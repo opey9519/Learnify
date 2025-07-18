@@ -12,7 +12,7 @@ function CreateFlashcardSet() {
 
     const handleCreateFlashcardSet = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/createflashcardset', {
+            const response = await fetch('https://learnify-backend-vgj2.onrender.com/createflashcardset', {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,

@@ -38,7 +38,7 @@ function Header() {
           const refreshJti = jwtDecode(refresh_token).jti
         //   console.log(token)
       
-          const response = await fetch("http://127.0.0.1:5000/signout", {
+          const response = await fetch("https://learnify-backend-vgj2.onrender.com/signout", {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${token}`,

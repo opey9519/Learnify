@@ -84,7 +84,7 @@ function FlashCardQA() {
                 set_id: flashcardSet.id
             }
 
-            const response = await fetch("http://127.0.0.1:5000/createflashcard", {
+            const response = await fetch("https://learnify-backend-vgj2.onrender.com/createflashcard", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -106,7 +106,7 @@ function FlashCardQA() {
     // Calls Delete Flashcard API
     const handleDeleteFlashcard = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/deleteflashcard/${flashcards[flashcardIndex].id}`, {
+            const response = await fetch(`https://learnify-backend-vgj2.onrender.com/deleteflashcard/${flashcards[flashcardIndex].id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -128,7 +128,7 @@ function FlashCardQA() {
     // Calls Get Flashcards API
     const handleFetchFlashcards = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/getflashcardset/${flashcardSet.id}`, {
+            const response = await fetch(`https://learnify-backend-vgj2.onrender.com/getflashcardset/${flashcardSet.id}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -147,7 +147,7 @@ function FlashCardQA() {
     // Calls Edit Flashcard API
     const handleEditFlashcard = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/editflashcard/${flashcards[flashcardIndex].id}`, {
+            const response = await fetch(`https://learnify-backend-vgj2.onrender.com/${flashcards[flashcardIndex].id}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -176,7 +176,7 @@ function FlashCardQA() {
     // Calls Generate Flashcards API (AI)
     const handleGenerateFlashcards = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/generateflashcards`, {
+            const response = await fetch(`https://learnify-backend-vgj2.onrender.com/generateflashcards`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,

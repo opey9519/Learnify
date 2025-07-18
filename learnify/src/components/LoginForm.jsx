@@ -16,7 +16,7 @@ function LoginForm() {
 
         // Try to fetch 
         try {
-            const response = await fetch("http://127.0.0.1:5000/signin", {
+            const response = await fetch("https://learnify-backend-vgj2.onrender.com/signin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
@@ -41,7 +41,7 @@ function LoginForm() {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://127.0.0.1:5000/signout", {
+            const response = await fetch("https://learnify-backend-vgj2.onrender.com/signout", {
             method: "POST",
         })
         localStorage.removeItem("token");

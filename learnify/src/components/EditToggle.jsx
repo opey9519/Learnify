@@ -18,7 +18,7 @@ function EditToggle({set_id, refreshFlashcards}) {
     // Request edit flashcard set through API
     const editFlashcardSet = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/editflashcardset/${set_id.id}`, {
+            const response = await fetch(`https://learnify-backend-vgj2.onrender.com/editflashcardset/${set_id.id}`, {
                 method: "PUT",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -41,7 +41,7 @@ function EditToggle({set_id, refreshFlashcards}) {
     // Request delete flashcard set through API
     const deleteFlashcardSet = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/deleteflashcardset/${set_id.id}`, {
+            const response = await fetch(`https://learnify-backend-vgj2.onrender.com/deleteflashcardset/${set_id.id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
