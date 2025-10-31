@@ -34,9 +34,5 @@ Axios – Frontend library for making HTTP requests
 
 🔄 Fully connected frontend and backend via REST API
 
-## Setup Instructions
-1. Clone repo
-2. Set up `.env`
-3. Run `pip install -r requirements.txt`
-4. Run `python3 server.py from `/backend`
-5. Run `npm run dev` from `/learnify`
+## Project Overview
+[YouTube App Demo](https://youtu.be/mseELBRiuM0)
