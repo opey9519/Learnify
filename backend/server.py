@@ -30,11 +30,7 @@ app = Flask(__name__)
 # Allows Flask API to handle requests to React App
 CORS(app,
      supports_credentials=True,
-     origins=[
-         # Dev frontend (Vite)
-         CORS_ORIGIN, os.getenv("CORS_ORIGIN", "http://localhost:5173"),
-         "http://127.0.0.1:5173"                             # Alt local
-     ])
+     origins=[CORS_ORIGIN])
 limiter = Limiter(
     key_func=get_identity,
     app=app,
