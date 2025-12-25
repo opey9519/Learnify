@@ -30,23 +30,7 @@ namespace LearnifyAPI.Controllers
         [HttpGet]
         public IActionResult GetFlashcardSets()
         {
-            var flashcardSets = new[]
-            {
-                new
-                {
-                    Id = 1,
-                    Title = "Data Structures",
-                    Description = "Stacks, queues, trees"
-                },
-                new
-                {
-                    Id = 2,
-                    Title = "Computer Architecture",
-                    Description = "ISA, asbtraction"
-                }
-            };
-
-            return Ok(flashcardSets);
+            return Ok(FlashcardSets);
         }
 
 
@@ -54,23 +38,7 @@ namespace LearnifyAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult GetFlashcardSetByID([FromRoute] int id)
         {
-            var flashcardSets = new[]
-            {
-                new
-                {
-                    Id = 1,
-                    Title = "Data Structures",
-                    Description = "Stacks, queues, trees"
-                },
-                new
-                {
-                    Id = 2,
-                    Title = "Computer Architecture",
-                    Description = "ISA, abstraction"
-                }
-            };
-
-            var flashcardSet = flashcardSets.FirstOrDefault(fs => fs.Id == id);
+            var flashcardSet = FlashcardSets.FirstOrDefault(fs => fs.Id == id);
 
             if (flashcardSet == null)
             {
