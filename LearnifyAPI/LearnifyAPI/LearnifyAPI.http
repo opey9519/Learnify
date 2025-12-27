@@ -1,3 +1,4 @@
+// Flashcard Sets Endpoints
 @LearnifyAPI_HostAddress = http://localhost:5132
 
 GET {{LearnifyAPI_HostAddress}}/api/flashcard-sets
@@ -29,6 +30,39 @@ Content-Type: application/json
 
 ###
 DELETE {{LearnifyAPI_HostAddress}}/api/flashcard-sets/1
+Accept: application/json
+
+###
+
+// Flashcards Endpoints
+GET {{LearnifyAPI_HostAddress}}/api/flashcard-sets/1/flashcards
+Accept: application/json
+
+###
+GET {{LearnifyAPI_HostAddress}}/api/flashcard-sets/1/flashcards/1
+Accept: application/json
+
+### 
+POST {{LearnifyAPI_HostAddress}}/api/flashcard-sets/1/flashcards
+Content-Type: application/json
+
+{
+    "Question": "What is a binary search?",
+    "Answer": "A search algorithm that finds the position of a target value within a sorted array."
+}
+
+###
+PUT {{LearnifyAPI_HostAddress}}/api/flashcard-sets/1/flashcards/1
+Content-Type: application/json
+
+{
+    "Id": 1,
+    "Question": "Updated Question",
+    "Answer": "Updated Answer"
+}
+
+###
+DELETE {{LearnifyAPI_HostAddress}}/api/flashcard-sets/1/flashcards/1
 Accept: application/json
 
 ###
