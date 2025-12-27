@@ -53,12 +53,14 @@ namespace LearnifyAPI.Controllers
         [HttpPost]
         public IActionResult CreateFlashcardSet([FromBody] FlashcardSetCreateDto dto)
         {
-            var newFlashcardSet = new
+            var newFlashcardSet = new FlashcardSet
             {
                 Id = 3,
                 Title = dto.Title,
                 Description = dto.Description
             };
+
+            FlashcardSets.Add(newFlashcardSet);
 
             return CreatedAtAction(
                 nameof(GetFlashcardSetByID),
